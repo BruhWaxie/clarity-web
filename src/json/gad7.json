@@ -1,0 +1,114 @@
+{
+  "id": "gad7",
+  "approximateTime": "5 minutes",
+  "title": "General Anxiety Disorder(GAD-7)",
+  "description": "General Anxiety Disorder 7 (GAD-7) is a short questionnaire used to assess a person’s anxiety symptoms over the past two weeks. It includes 7 questions, each of whichevaluates the severity of symptoms for the specified period using a point-based scoring system.",
+  "howItWorks": "The total GAD-7 score for all seven items ranges from 0 to 21 points, where a result of 0–4 points indicates no symptoms, 5–9 points indicates mild symptoms, 10–14 points indicates moderate symptoms, and 15 points or more indicates clinically significant symptoms.",
+  "scoringDirection": "higher-worse",
+
+  "questions": [
+    {
+      "text": "Over the last two weeks, how often have you been feeling nervous, anxious, or on edge?",
+      "answers": [
+        { "text": "Not at all", "points": 0 },
+        { "text": "Several days", "points": 1 },
+        { "text": "More than half the days", "points": 2 },
+        { "text": "Nearly every day", "points": 3 }
+      ]
+    },
+    {
+      "text": "Over the last two weeks, how often have you not been able to stop or control worrying?",
+      "answers": [
+        { "text": "Not at all", "points": 0 },
+        { "text": "Several days", "points": 1 },
+        { "text": "More than half the days", "points": 2 },
+        { "text": "Nearly every day", "points": 3 }
+      ]
+    },
+    {
+      "text": "Over the last two weeks, how often have you not been worrying too much about different things?",
+      "answers": [
+        { "text": "Not at all", "points": 0 },
+        { "text": "Several days", "points": 1 },
+        { "text": "More than half the days", "points": 2 },
+        { "text": "Nearly every day", "points": 3 }
+      ]
+    },
+    {
+      "text": "Over the last two weeks, how often have you not been having trouble relaxing?",
+      "answers": [
+        { "text": "Not at all", "points": 0 },
+        { "text": "Several days", "points": 1 },
+        { "text": "More than half the days", "points": 2 },
+        { "text": "Nearly every day", "points": 3 }
+      ]
+    },
+    {
+      "text": "Over the last two weeks, how often have you not been worrying too much about different things?",
+      "answers": [
+        { "text": "Not at all", "points": 0 },
+        { "text": "Several days", "points": 1 },
+        { "text": "More than half the days", "points": 2 },
+        { "text": "Nearly every day", "points": 3 }
+      ]
+    },
+    {
+      "text": "Over the last two weeks, how often have you not been feeling so restless that it is hard to sit still?",
+      "answers": [
+        { "text": "Not at all", "points": 0 },
+        { "text": "Several days", "points": 1 },
+        { "text": "More than half the days", "points": 2 },
+        { "text": "Nearly every day", "points": 3 }
+      ]
+    },
+    {
+      "text": "Over the last two weeks, how often have you not been became easily annoyed or irritable?",
+      "answers": [
+        { "text": "Not at all", "points": 0 },
+        { "text": "Several days", "points": 1 },
+        { "text": "More than half the days", "points": 2 },
+        { "text": "Nearly every day", "points": 3 }
+      ]
+    },
+    {
+      "text": "Over the last two weeks, how often have you not been feeling afraid, as if something awful might happen?",
+      "answers": [
+        { "text": "Not at all", "points": 0 },
+        { "text": "Several days", "points": 1 },
+        { "text": "More than half the days", "points": 2 },
+        { "text": "Nearly every day", "points": 3 }
+      ]
+    }
+  ],
+
+  "results": [
+    {
+      "min": 0,
+      "max": 4,
+      "smiley": "happy",
+      "title": "Minimal Anxiety",
+      "description": "This level reflects very mild or near-absent anxiety symptoms that have little to no impact on daily functioning. Occasional moments of worry or tension may appear, but they are brief, manageable, and do not interfere with sleep, concentration, or overall well-being. Maintaining healthy habits and self-care can help keep these symptoms minimal over time."
+    },
+    {
+      "min": 5,
+      "max": 9,
+      "smiley": "neutral",
+      "title": "Mild Anxiety",
+      "description": "This level indicates mild but noticeable anxiety symptoms that occasionally affect mood, focus, or daily routines. Individuals may experience brief periods of worry, light tension, or restlessness, yet these feelings typically remain manageable and do not significantly disrupt functioning. Monitoring these symptoms and practicing healthy coping strategies can help prevent them from increasing over time."
+    },
+    {
+      "min": 10,
+      "max": 14,
+      "smiley": "neutral",
+      "title": "Moderate Anxiety",
+      "description": "This level reflects noticeable anxiety symptoms that begin to interfere with daily life, including focus, productivity, and emotional balance. It may involve recurring worry, physical tension, restlessness, and difficulty staying calm in stressful situations. While these symptoms are manageable, seeking guidance from a mental health professional can help prevent them from intensifying and support healthier coping strategies."
+    },
+    {
+      "min": 15,
+      "max": 21,
+      "smiley": "sad",
+      "title": "Severe Anxiety",
+      "description": "This level indicates highly intense anxiety symptoms that significantly interfere with daily functioning — including sleep, concentration, emotional stability, and the ability to carry out everyday tasks. It may involve persistent worry, overwhelming tension, and difficulty calming the mind. It is recommended to seek support from a mental health professional for a thorough assessment and guidance."
+    }
+  ]
+}

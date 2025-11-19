@@ -1,0 +1,330 @@
+main {
+    height: 100vh;
+}
+
+footer {
+    margin-top: 0;
+}
+
+.main-container {
+    overflow: visible;
+}
+
+.container {
+    width: 1420px;
+    margin: 0 auto;
+}
+
+/* ===== ТВОЯ ВЕРСТКА ТЕСТУ ===== */
+
+.how-it-works {
+    padding: 10px;
+    border-radius: 15px;
+    position: relative;
+}
+
+.description {
+    margin-bottom: 30px;
+}
+
+.how-it-works::before {
+    position: absolute;
+    content: '';
+    width: 1px;
+    height: 100%;
+    background: #fff;
+    top: 0;
+    left: 0px;
+}
+
+h1 {
+    padding: 0;
+    margin: 0;
+}
+
+.title {
+    display: flex;
+    justify-content: space-between;
+}
+
+.title span {
+    color: var(--sixth-text-color);
+    font-size: 14px;
+}
+
+.question-count {
+    font-size: 14px;
+    color: var(--sixth-text-color);
+}
+
+.test-btn {
+    background: var(--button-bg);
+    padding: 7px 14px;
+    border-radius: 100px;
+    margin-top: 30px;
+    box-sizing: border-box;
+    border: 2px solid var(--button-bg);
+    margin-right: 4px;
+    cursor: pointer;
+}
+
+.accepting-link {
+    color: var(--primary-color);
+}
+
+.accepting-link:hover {
+    text-decoration: underline;
+}
+
+.acception {
+    font-size: 13px;
+}
+
+h2 {
+    margin-bottom: 25px;
+}
+
+/* Ховаємо стандартні radio */
+[name^='qstn'] {
+    display: none;
+}
+
+.radio-answer {
+    position: relative;
+    width: 30px;
+    height: 30px;
+    box-sizing: border-box;
+    border: 2px solid var(--color-text);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.radio-label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 8px;
+}
+
+.checkmark {
+    display: none;
+    width: calc(100% - 8px);
+    height: calc(100% - 8px);
+    background: var(--color-text);
+    position: absolute;
+    border-radius: 50%;
+}
+
+.radio-answer input:checked + .checkmark {
+    display: inline-block;
+}
+
+/* Outline кнопка */
+.outline-btn {
+    background: none;
+    color: var(--color-text);
+    box-sizing: border-box;
+    border: 2px solid var(--color-text);
+    transition: all 0.5s ease;
+    cursor: pointer;
+}
+
+.outline-btn:hover {
+    background: var(--color-text);
+    color: var(--color-bg);
+}
+
+.points-gained {
+    margin: 0;
+    font-size: 14px;
+    color: var(--sixth-text-color);
+}
+
+.scoring-board {
+    width: 100%;
+    height: 35px;
+    background: var(--secondary-color);
+    margin: 12px 0;
+    border-radius: 1000px;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+}
+
+.score-line {
+    height: calc(100% - 8px);
+    width: 0;
+    margin-left: 4px;
+    background: linear-gradient(90deg,
+            #d72638 0%,
+            #f4a261 25%,
+            #e9c46a 50%,
+            #2a9d8f 75%,
+            #2b9348 100%);
+    border-radius: 1000px;
+    transition: width 0.6s ease; /* анімація шкали */
+}
+
+.result-description {
+    line-height: 1.5;
+    margin-top: 8px;
+}
+
+.result h4 {
+    padding-bottom: 0;
+    margin-bottom: 0;
+}
+
+.smiley {
+    width: 80px;
+}
+
+.title-stan {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.warning {
+    text-transform: uppercase;
+    color: var(--color-text);
+    background: var(--popup-color-blue);
+    padding: 10px;
+    width: fit-content;
+    border-radius: 15px;
+}
+
+.card {
+    height: 100px;
+    width: 300px;
+    background: var(--popup-color-blue);
+    border-radius: 25px;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.preview-image {
+    width: 100px;
+    height: 100px;
+    background: var(--popup-color-blue);
+}
+
+.cards {
+    display: flex;
+    width: 100%;
+    gap: 12px;
+    overflow: auto;
+    user-select: none;
+}
+
+.card.blue,
+.preview-image.blue {
+    background: var(--popup-color-blue);
+}
+
+.card.red,
+.preview-image.red {
+    background: var(--popup-color-red);
+}
+
+.card.yellow,
+.preview-image.yellow {
+    background: var(--popup-color-yellow);
+}
+
+.card.green,
+.preview-image.green {
+    background: var(--popup-color-green);
+}
+
+.card.pink,
+.preview-image.pink {
+    background: var(--popup-color-pink);
+}
+
+.card.magenta,
+.preview-image.magenta {
+    background: var(--popup-color-magenta);
+}
+
+.card.cyan,
+.preview-image.cyan {
+    background: var(--popup-color-cyan);
+}
+
+.card.purple,
+.preview-image.purple {
+    background: var(--popup-color-purple);
+}
+
+/* ===== ВИДИМІСТЬ БЛОКІВ ===== */
+
+/* За замовчуванням усе сховане */
+.before-test-info,
+.question,
+.result-window,
+.result {
+    display: none;
+}
+
+/* Те, що активне — показується */
+.before-test-info.active,
+.question.active,
+.result-window.active,
+.result.true {
+    display: block;
+}
+
+/* ===== Анімація переходу між питаннями ===== */
+
+.question {
+    transition: transform 0.35s ease, opacity 0.35s ease;
+}
+
+/* Результат теж буде плавно виїжджати знизу */
+.result-window {
+    transition: transform 0.35s ease, opacity 0.35s ease;
+}
+
+.container {
+    position: relative;
+}
+
+/* Базово питання позиціонуються як блоки, JS сам керує display */
+.question {
+    position: absolute;
+    width: 100%;
+    top: 0;
+}
+/* Відповіді виглядають як кнопки */
+.radio-label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 8px;
+    padding: 8px 14px;
+    border-radius: 999px;
+    border: 1px solid var(--color-text);
+    cursor: pointer;
+    transition: background 0.2s ease, border-color 0.2s ease, transform 0.1s ease;
+}
+
+/* Обрана відповідь */
+.radio-label.selected {
+    background: var(--secondary-color);
+    border-color: var(--primary-color);
+    transform: translateY(-1px);
+}
+
+/* Заблокована кнопка Next */
+.disabled-btn {
+    opacity: 0.4;
+    cursor: not-allowed;
+    pointer-events: none;
+    
+}
