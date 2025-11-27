@@ -1,0 +1,129 @@
+.container {
+    border: 1px solid red;
+    display: flex;
+}
+
+.main-info-container {
+    width: 450px;
+}
+
+.additional-info {
+    width: 900px;
+    border: 1px solid green;
+}
+
+.user-pfp {
+    width: 225px;
+    border-radius: 50%;
+}
+
+.doctors-name {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    margin: 0;
+    padding: 0;
+    justify-content: center;
+}
+
+.doctors-name span {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    margin: 0;
+}
+
+.prof {
+    margin: 0;
+    font-weight: 200;
+}
+
+.rating {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    margin-top: 8px;
+}
+
+.stars {
+    display: flex;
+    gap: 1px;
+}
+
+.rating span {
+    margin: 0;
+    padding: 0;
+    font-weight: 200;
+    font-size: 14px;
+}
+
+.achievements {
+    font-size: 13px;
+    margin-top: 4px;
+}
+
+.specifications {
+    display: flex;
+    flex-wrap: wrap;
+    width: 80%;
+    gap: 4px;
+    margin-top: 12px;
+}
+
+.chip {
+    font-size: 12px;
+    border-radius: 1000px;
+    padding: 5px 10px;
+    background: var(--secondary-color);
+}
+
+.icon-info>div {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    margin-top: 8px;
+}
+
+.icon-info {
+    margin-top: 16px;
+}
+
+.info-name {
+    margin: 0;
+    font-size: 14px;
+}
+
+.lower-info {
+    font-size: 12px;
+    margin: 0;
+    font-weight: 300;
+}
+
+.icon-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 30px;
+}
+
+.msg-btn {
+    position: static;
+    border-radius: 1000px;
+    margin-top: 20px;
+    padding: 8px 10px;
+    background: var(--primary-color);
+    
+}
+
+.msg-btn {
+    border: none;
+    cursor: pointer;
+    position: static;
+    display: block;
+    width: fit-content;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
