@@ -1,0 +1,444 @@
+html,
+body {
+    margin: 0;
+    padding: 0;
+}
+
+p {
+    margin: 0;
+    padding: 0;
+}
+
+body {
+
+    background: var(--background-img);
+    background-size: var(--bg-size);
+    width: 100vw;
+    background-color: black;
+}
+
+.fixed-navbar {
+    height: 75px;
+    border: none;
+    background: var(--third-color);
+
+}
+
+
+.homepage-menu {
+    height: 60px;
+    position: fixed;
+    background: color-mix(in srgb, var(--secondary-color) 80%, transparent 20%);
+    z-index: 10002;
+    border-radius: 1000px;
+    bottom: 15px;
+    left: 15px;
+    backdrop-filter: blur(5px);
+    display: flex;
+    align-items: center;
+    padding: 0 10px;
+    gap: 4px;
+    box-sizing: border-box;
+    transition: transform 0.25s ease;
+    overflow: hidden;
+}
+
+.homepage-menu::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    width: 100%;              /* ширина глоу = приблизно ширині бульки */
+    height: 100%;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.25s ease;
+    background: linear-gradient(90deg, transparent 0%, color-mix(in srgb, var(--secondary-color) 90%, white 10%) 50%, transparent 100%);
+    z-index: -1; /* під меню, але над фоном */
+    left: var(--glow-x, 0px);
+}
+
+
+.homepage-menu.holding::after {
+    opacity: 1;
+}
+
+.hmenu-item {
+    padding: 10px 17px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 1000px;
+    position: relative;
+    z-index: 10;
+
+}
+
+.hmenu-item.selected {
+    background: var(--fourth-color);
+    position: relative;
+    backdrop-filter: blur(20px);
+    z-index: 999;
+}
+
+.hmenu-item.selected::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    padding: 0.5px;
+    background: linear-gradient(to bottom left,
+            var(--border-outline-color) 0%,
+            color-mix(in srgb, var(--border-outline-color) 100%, transparent) 10%,
+            color-mix(in srgb, var(--border-outline-color) 0%, transparent) 75%,
+            var(--border-outline-color) 100%);
+    mask:
+        linear-gradient(#fff 0 0) content-box,
+        linear-gradient(#fff 0 0);
+    -webkit-mask:
+        linear-gradient(#fff 0 0) content-box,
+        linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    pointer-events: none;
+}
+
+.hmenu-item:not(.selected):hover {
+    background: color-mix(in srgb, var(--fourth-color) 50%, transparent 50%);
+}
+
+.hmenu-item svg {
+    height: 22px;
+    width: 22px;
+}
+
+.hmenu-item svg path {
+    width: max-content;
+}
+
+.liquid-bubble {
+    position: fixed;
+    top: 50%;
+    left: 0;
+    width: 90px;
+    height: 60px;
+    pointer-events: none;
+    transform: translate(-50%, -50%);
+    border-radius: 1000px;
+    backdrop-filter: url(#thumb-filter-slider);
+    z-index: 999999999;
+    /* поверх усього */
+    display: flex;
+    align-items: center;
+    align-self: center;
+
+    background: none;
+    box-shadow: none;
+
+    opacity: 0;
+    mix-blend-mode: normal;
+    overflow: hidden;
+
+}
+
+.liquid-bubble.resting {
+    z-index: 5;
+}
+
+.homepage-menu.holding .hmenu-item.selected {
+    background: transparent !important;
+}
+
+.homepage-menu.holding .hmenu-item.selected::before,
+.homepage-menu.returning .hmenu-item.selected::before {
+    display: none !important;
+}
+
+
+.homepage-menu.holding .hmenu-item,
+.homepage-menu.returning .hmenu-item {
+    pointer-events: none;
+}
+
+.homepage-menu.bubble-resting .hmenu-item {
+    pointer-events: auto;
+}
+
+.liquid-bubble.active {
+    opacity: 1;
+}
+
+.homepage-menu.holding .hmenu-item.selected,
+.homepage-menu.returning .hmenu-item.selected {
+    background: transparent !important;
+}
+
+.hmenu-item.rested {
+    background: var(--fourth-color);
+    backdrop-filter: blur(8px);
+    transition: background 0.3s ease, backdrop-filter 0.3s ease;
+}
+
+.gm-msg {
+    text-align: left;
+    font-size: 24px;
+    font-weight: 400;
+    font-family: var(--header-font);
+}
+
+.mood-tracker {
+    width: 450px;
+    height: 350px;
+    background-color: color-mix(in srgb, var(--secondary-color) 50%, transparent 50%);
+    padding: 20px 17px;
+    border-radius: 25px;
+    backdrop-filter: blur(10px);
+    box-sizing: border-box;
+}
+
+.stat-days {
+    display: flex;
+    width: 100%;
+    justify-content: space-around;
+}
+
+.scale-div {
+    height: 125px;
+    display: flex;
+    justify-content: space-around;
+    margin-top: 36px;
+}
+
+.stat-divider {
+    padding: 0;
+    margin: 0;
+    margin-bottom: 4px;
+    border: 1px solid var(--fifth-color);
+}
+
+.scale-div [class$='scale'] {
+    width: 27px;
+    height: 100%;
+    background-color: var(--secondary-color);
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+}
+
+.stat-day {
+    width: 27px;
+    text-align: center;
+    padding: 0;
+    margin: 0;
+    font-size: 10px;
+    font-weight: 300;
+    user-select: none;
+}
+
+.main-information {
+    margin-top: 30px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.mood-tracker p {
+    margin: 0;
+    padding: 0;
+}
+
+.main-information {
+    width: 100%;
+}
+
+
+
+main {
+    width: 100%;
+    height: 99vh;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.main-container {
+    align-items: flex-start;
+}
+
+.homepage-menu.holding .liquid-bubble::after {
+    opacity: 0.55;
+}
+
+.homepage-menu.holding {
+    transform: scale(1.07);
+}
+
+.homepage-menu.holding .liquid-bubble {
+    transform: translate(-50%, -50%) scale(1.15) !important;
+}
+
+.ai-review h5 {
+    font-weight: 400;
+    padding: 0;
+    margin: 0;
+    margin-top: 24px;
+    margin-bottom: 8px;
+}
+
+.ai-review p {
+    font-size: 12px;
+    font-weight: 300;
+}
+
+.afirms-x-quotes div {
+    width: 300px;
+    height: 150px;
+    margin-bottom: 12px;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    border-radius: 20px;
+    position: relative;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+
+.overlay-img {
+    width: 100%;
+    height: auto;
+    position: absolute;
+    filter: brightness(50%);
+    z-index: -2;
+}
+
+.item-frame p {
+    color: white;
+    margin: 0;
+    padding: 0;
+}
+
+.main-txt {
+    text-align: center;
+    width: 75%;
+    font-size: 18px;
+}
+
+.quote-author {
+    text-align: right;
+    width: 75%;
+    font-size: 15px;
+    font-weight: 200;
+}
+
+.item-frame {
+    cursor: pointer;
+    user-select: none;
+}
+
+.daily-article {
+    width: 350px;
+    height: 400px;
+    background-color: color-mix(in srgb, var(--secondary-color) 50%, transparent 50%);
+    border-radius: 25px;
+    padding: 12px;
+    box-sizing: border-box;
+    cursor: pointer;
+    backdrop-filter: blur(10px);
+}
+
+.article-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;       /* обрізає, не спотворюючи */
+  object-position: center center; /* центрує по горизонталі та вертикалі */
+  display: block;
+  filter: var(--brightness);
+}
+
+.cropping-rect {
+  width: 100%;
+  height: 150px;  
+  overflow: hidden;       
+  border-radius: 13px;
+  position: relative;
+}
+
+.article-title {
+    margin-top: 12px;
+}
+
+.article-author {
+    display: flex;
+    align-items: center;
+    gap: 2px;
+    font-size: 13px;
+}
+
+.article-author:hover {
+    text-decoration: underline;
+} 
+
+.article-author span {
+    padding: 0;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.article-description {
+    font-size: 12px;
+    height: 160px;
+    overflow: hidden;
+    mask: linear-gradient(to top, transparent 0%, transparent 17%, var(--color-text) 75%, var(--color-text) 100%);
+}
+
+.daily-test {
+    width: 300px;
+    height: 400px;
+    overflow: hidden;
+    position: relative;
+    border-radius: 25px;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    user-select: none;
+    cursor: pointer;
+    background-color: color-mix(in srgb, var(--secondary-color) 50%, transparent 50%);
+}
+
+.btn {
+    padding: 7px 16px;
+    font-size: 14px;
+    width: fit-content;
+    height: fit-content;
+}
+
+.daily-test p:first-of-type {
+    margin-top: 50px;
+}
+
+.daily-test p:last-of-type {
+    font-size: 20px;
+    margin-top: 8px;
+}
+
+.daily-test a {
+    position: absolute;
+    bottom: 30px;
+}
+
+.daily-test .overlay-img {
+    mix-blend-mode: var(--blend-mode);
+}
+
+.object-img {
+    position: absolute;
+    filter: var(--brightness);
+}
+
+.main-container {
+    padding-left: 20px;
+    padding-right: 20px;
+}
