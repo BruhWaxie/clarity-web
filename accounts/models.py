@@ -96,9 +96,9 @@ class WorkSchedule(models.Model):
         related_name="schedules"
     )
 
-    date = models.DateField()              # Напр: 2025-08-11
-    start_time = models.TimeField()        # 12:00
-    end_time = models.TimeField()          # 22:00
+    date = models.DateField()
+    start_time = models.TimeField()
+    end_time = models.TimeField()
 
     def __str__(self):
         return f"{self.psychologist} — {self.date}"
@@ -110,7 +110,7 @@ class TimeSlot(models.Model):
         related_name="time_slots"
     )
 
-    time = models.TimeField()              # 12:00, 14:00, 17:00
+    time = models.TimeField()
     is_available = models.BooleanField(default=True)
 
     def __str__(self):

@@ -1,10 +1,11 @@
 from django.db import models
 from django.contrib.auth.models import User
+from accounts.models import CustomUser
 
 
 class PrivateChat(models.Model):
-    user1 = models.ForeignKey(User, on_delete=models.CASCADE, related_name='chats_as_user1')
-    user2 = models.ForeignKey(User, on_delete=models.CASCADE, related_name='chats_as_user2')
+    user1 = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name='chats_as_user1')
+    user2 = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name='chats_as_user2')
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
@@ -12,7 +13,7 @@ class PrivateChat(models.Model):
 
 class Message(models.Model):
     chat = models.ForeignKey(PrivateChat, on_delete=models.CASCADE, related_name='messages')
-    sender = models.ForeignKey(User, on_delete=models.CASCADE)
+    sender = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
     text = models.TextField()
     timestamp = models.DateTimeField(auto_now_add=True)
 

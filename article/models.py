@@ -1,9 +1,10 @@
 from django.db import models
+from accounts.models import CustomUser
 
 
 class Article(models.Model):
     title = models.CharField(max_length=255)
-    author_name = models.CharField(max_length=255)
+    author_name = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
     is_verified = models.BooleanField(default=False)
 
     content = models.TextField()
@@ -21,7 +22,7 @@ class Comment(models.Model):
         related_name="comments"
     )
 
-    author_name = models.CharField(max_length=255)
+    author_name = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
     text = models.TextField()
     created_at = models.DateTimeField()
 
