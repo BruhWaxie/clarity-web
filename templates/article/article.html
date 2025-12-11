@@ -1,3 +1,4 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 
@@ -5,13 +6,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>How to become happier? - Clarity</title>
+    <title>{{ article.title }} - Clarity</title>
 
-    <link rel="stylesheet" href="./src/css/base.css">
-    <link rel="stylesheet" href="./src/css/article.css">
-    <link rel="stylesheet" href="./src/css/fonts.css">
+    <link rel="stylesheet" href="{% static 'css/base.css' %}">
+    <link rel="stylesheet" href="{% static 'css/article.css' %}">
+    <link rel="stylesheet" href="{% static 'css/fonts.css' %}">
 
-    <link id="themeChanger" rel="stylesheet" href="./src/css/dark-theme.css">
+    <link id="themeChanger" rel="stylesheet" href="{% static 'css/dark-theme.css' %}">
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -168,7 +169,7 @@
 
     <header>
         <nav id="article-navbar">
-            <p class="article-navbar-title">How to become happier?</p>
+            <p class="article-navbar-title">{{ article.title }}</p>
             <div class="article-nav-links">
                 <a href="#" id="link-overview">Overview</a>
                 <a href="#base-info" id="link-article">Article</a>
@@ -255,132 +256,51 @@
 
         <div class="container">
             <main id="base-info">
-                <p class="verificationTag">VERIFIED ARTICLE</p>
-                <h1>How to become happier?</h1>
+                {% if article.is_verified %}
+                    <p class="verificationTag">VERIFIED ARTICLE</p>
+                {% endif %}
+                
+                <h1>{{ article.title }}</h1>
                 <div class="user-name">
-                    <a>Dr. Tompson</a>
-                    <svg width="20px" height="20px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path fill-rule="evenodd" clip-rule="evenodd"
-                            d="M9.5924 3.20027C9.34888 3.4078 9.22711 3.51158 9.09706 3.59874C8.79896 3.79854 8.46417 3.93721 8.1121 4.00672C7.95851 4.03705 7.79903 4.04977 7.48008 4.07522C6.6787 4.13918 6.278 4.17115 5.94371 4.28923C5.17051 4.56233 4.56233 5.17051 4.28923 5.94371C4.17115 6.278 4.13918 6.6787 4.07522 7.48008C4.04977 7.79903 4.03705 7.95851 4.00672 8.1121C3.93721 8.46417 3.79854 8.79896 3.59874 9.09706C3.51158 9.22711 3.40781 9.34887 3.20027 9.5924C2.67883 10.2043 2.4181 10.5102 2.26522 10.8301C1.91159 11.57 1.91159 12.43 2.26522 13.1699C2.41811 13.4898 2.67883 13.7957 3.20027 14.4076C3.40778 14.6511 3.51158 14.7729 3.59874 14.9029C3.79854 15.201 3.93721 15.5358 4.00672 15.8879C4.03705 16.0415 4.04977 16.201 4.07522 16.5199C4.13918 17.3213 4.17115 17.722 4.28923 18.0563C4.56233 18.8295 5.17051 19.4377 5.94371 19.7108C6.278 19.8288 6.6787 19.8608 7.48008 19.9248C7.79903 19.9502 7.95851 19.963 8.1121 19.9933C8.46417 20.0628 8.79896 20.2015 9.09706 20.4013C9.22711 20.4884 9.34887 20.5922 9.5924 20.7997C10.2043 21.3212 10.5102 21.5819 10.8301 21.7348C11.57 22.0884 12.43 22.0884 13.1699 21.7348C13.4898 21.5819 13.7957 21.3212 14.4076 20.7997C14.6511 20.5922 14.7729 20.4884 14.9029 20.4013C15.201 20.2015 15.5358 20.0628 15.8879 19.9933C16.0415 19.963 16.201 19.9502 16.5199 19.9248C17.3213 19.8608 17.722 19.8288 18.0563 19.7108C18.8295 19.4377 19.4377 18.8295 19.7108 18.0563C19.8288 17.722 19.8608 17.3213 19.9248 16.5199C19.9502 16.201 19.963 16.0415 19.9933 15.8879C20.0628 15.5358 20.2015 15.201 20.4013 14.9029C20.4884 14.7729 20.5922 14.6511 20.7997 14.4076C21.3212 13.7957 21.5819 13.4898 21.7348 13.1699C22.0884 12.43 22.0884 11.57 21.7348 10.8301C21.5819 10.5102 21.3212 10.2043 20.7997 9.5924C20.5922 9.34887 20.4884 9.22711 20.4013 9.09706C20.2015 8.79896 20.0628 8.46417 19.9933 8.1121C19.963 7.95851 19.9502 7.79903 19.9248 7.48008C19.8608 6.6787 19.8288 6.278 19.7108 5.94371C19.4377 5.17051 18.8295 4.56233 18.0563 4.28923C17.722 4.17115 17.3213 4.13918 16.5199 4.07522C16.201 4.04977 16.0415 4.03705 15.8879 4.00672C15.5358 3.93721 15.201 3.79854 14.9029 3.59874C14.7729 3.51158 14.6511 3.40781 14.4076 3.20027C13.7957 2.67883 13.4898 2.41811 13.1699 2.26522C12.43 1.91159 11.57 1.91159 10.8301 2.26522C10.5102 2.4181 10.2043 2.67883 9.5924 3.20027ZM16.3735 9.86314C16.6913 9.5453 16.6913 9.03 16.3735 8.71216C16.0557 8.39433 15.5403 8.39433 15.2225 8.71216L10.3723 13.5624L8.77746 11.9676C8.45963 11.6498 7.94432 11.6498 7.62649 11.9676C7.30866 12.2854 7.30866 12.8007 7.62649 13.1186L9.79678 15.2889C10.1146 15.6067 10.6299 15.6067 10.9478 15.2889L16.3735 9.86314Z"
-                            fill="#5E81FF" />
-                    </svg>
+                    <a>{{ article.author_name.first_name }} {{ article.author_name.last_name }}</a>
+                    {% if article.author_name.is_verified %}
+                        <svg width="20px" height="20px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path fill-rule="evenodd" clip-rule="evenodd"
+                                d="M9.5924 3.20027C9.34888 3.4078 9.22711 3.51158 9.09706 3.59874C8.79896 3.79854 8.46417 3.93721 8.1121 4.00672C7.95851 4.03705 7.79903 4.04977 7.48008 4.07522C6.6787 4.13918 6.278 4.17115 5.94371 4.28923C5.17051 4.56233 4.56233 5.17051 4.28923 5.94371C4.17115 6.278 4.13918 6.6787 4.07522 7.48008C4.04977 7.79903 4.03705 7.95851 4.00672 8.1121C3.93721 8.46417 3.79854 8.79896 3.59874 9.09706C3.51158 9.22711 3.40781 9.34887 3.20027 9.5924C2.67883 10.2043 2.4181 10.5102 2.26522 10.8301C1.91159 11.57 1.91159 12.43 2.26522 13.1699C2.41811 13.4898 2.67883 13.7957 3.20027 14.4076C3.40778 14.6511 3.51158 14.7729 3.59874 14.9029C3.79854 15.201 3.93721 15.5358 4.00672 15.8879C4.03705 16.0415 4.04977 16.201 4.07522 16.5199C4.13918 17.3213 4.17115 17.722 4.28923 18.0563C4.56233 18.8295 5.17051 19.4377 5.94371 19.7108C6.278 19.8288 6.6787 19.8608 7.48008 19.9248C7.79903 19.9502 7.95851 19.963 8.1121 19.9933C8.46417 20.0628 8.79896 20.2015 9.09706 20.4013C9.22711 20.4884 9.34887 20.5922 9.5924 20.7997C10.2043 21.3212 10.5102 21.5819 10.8301 21.7348C11.57 22.0884 12.43 22.0884 13.1699 21.7348C13.4898 21.5819 13.7957 21.3212 14.4076 20.7997C14.6511 20.5922 14.7729 20.4884 14.9029 20.4013C15.201 20.2015 15.5358 20.0628 15.8879 19.9933C16.0415 19.963 16.201 19.9502 16.5199 19.9248C17.3213 19.8608 17.722 19.8288 18.0563 19.7108C18.8295 19.4377 19.4377 18.8295 19.7108 18.0563C19.8288 17.722 19.8608 17.3213 19.9248 16.5199C19.9502 16.201 19.963 16.0415 19.9933 15.8879C20.0628 15.5358 20.2015 15.201 20.4013 14.9029C20.4884 14.7729 20.5922 14.6511 20.7997 14.4076C21.3212 13.7957 21.5819 13.4898 21.7348 13.1699C22.0884 12.43 22.0884 11.57 21.7348 10.8301C21.5819 10.5102 21.3212 10.2043 20.7997 9.5924C20.5922 9.34887 20.4884 9.22711 20.4013 9.09706C20.2015 8.79896 20.0628 8.46417 19.9933 8.1121C19.963 7.95851 19.9502 7.79903 19.9248 7.48008C19.8608 6.6787 19.8288 6.278 19.7108 5.94371C19.4377 5.17051 18.8295 4.56233 18.0563 4.28923C17.722 4.17115 17.3213 4.13918 16.5199 4.07522C16.201 4.04977 16.0415 4.03705 15.8879 4.00672C15.5358 3.93721 15.201 3.79854 14.9029 3.59874C14.7729 3.51158 14.6511 3.40781 14.4076 3.20027C13.7957 2.67883 13.4898 2.41811 13.1699 2.26522C12.43 1.91159 11.57 1.91159 10.8301 2.26522C10.5102 2.4181 10.2043 2.67883 9.5924 3.20027ZM16.3735 9.86314C16.6913 9.5453 16.6913 9.03 16.3735 8.71216C16.0557 8.39433 15.5403 8.39433 15.2225 8.71216L10.3723 13.5624L8.77746 11.9676C8.45963 11.6498 7.94432 11.6498 7.62649 11.9676C7.30866 12.2854 7.30866 12.8007 7.62649 13.1186L9.79678 15.2889C10.1146 15.6067 10.6299 15.6067 10.9478 15.2889L16.3735 9.86314Z"
+                                fill="#5E81FF" />
+                        </svg>                       
+                    {% endif %}
+
                 </div>
             </main>
 
             <section id="article-content">
-                <p>Happiness is not just an emotion—it’s a skill, a habit, and in many ways, a decision. After 15 years of
-                    working with clients struggling to find joy and fulfillment, and after conducting numerous studies on
-                    emotional well-being, I’ve realized something both surprising and empowering:</p>
-                <div class="quote">
-                    <p class="quote-text"> -You can train your brain to be happier.</p>
-                </div>
-                <p>In this article, I will combine research-based strategies with insights from my own life to guide you on
-                    a journey toward genuine happiness.</p>
-                <h2>Redefining What Happiness Means</h2>
-                <hr>
-                <p>When I was a student in psychology school, I believed happiness meant constant pleasure or a life without
-                    pain. That belief, however, led me down a path of chronic dissatisfaction.
-                    Research shows that happiness is not the absence of negative emotions but the presence of meaning,
-                    connection, and resilience. In fact, according to the <a href="#">Harvard Study of Adult
-                        Development</a>, the quality of our relationships is the single strongest predictor of long-term
-                    happiness.</p>
-                <h2>The Brain Likes Gratitude (and So Do I)</h2>
-                <hr>
-                <p>We live in a culture of "more = better". More followers. More money. More achievements. But here’s the
-                    counterintuitive truth I discovered:
-                    <br>
-                    The more I chased happiness, the further away it seemed.
-                    Mindfulness changed that for me. When I started practicing meditation, I learned to notice the present
-                    moment without judgment. This doesn’t mean you stop striving—it just means you don’t let your worth
-                    depend on the next milestone.
-                    Check out this guide to mindfulness for beginners if you’re unsure where to start.
-                    🧘 Pro tip from experience: Start with 5 minutes a day. That’s enough to begin building the mental
-                    muscle of presence.
-                </p>
-
-                <h2>Invest in People, Not Things</h2>
-                <hr>
-
-                <p>One of the most profound lessons I’ve learned is that material possessions bring only fleeting joy. In
-                    contrast, investing time and energy in relationships yields lasting happiness.
-                    <br>
-                    Make it a habit to reach out to friends and family regularly. Plan activities that foster connection,
-                    whether it’s a weekly dinner, a hike, or simply a phone call.
-                </p>
-
-                <h2>Final Thoughts (From Both My Head and Heart)</h2>
-                <p>Happiness isn’t a finish line. It’s a daily choice, a set of habits, and a perspective. There’s no
-                    perfect formula—but I hope these lessons, drawn from science and my own imperfect journey, guide you
-                    closer to your own version of joy.
-                    Quick Recap: 5 Habits That Helped Me Become Happier</p>
-
-                <ul>
-                    <li>Practice gratitude daily.</li>
-                    <li>Engage in regular mindfulness or meditation.</li>
-                    <li>Invest time in meaningful relationships.</li>
-                    <li>Focus on experiences over possessions.</li>
-                    <li>Embrace challenges
-                </ul>
-
-                <div class="quote-with-author">
-                    <div class="quote-text">
-                        <p>"Happiness is not something ready made. It comes from your own actions."</p>
-                    </div>
-
-
-                    <p class="quote-author">- Dalai Lama</p>
-                </div>
+                {{ article.content|safe }}
             </section>
 
             <section id="article-info">
                 <hr>
-                <p>Created at: 18.08.2020, 18:43</p>
-                <p>Last updated: 03.09.2023, 15:33</p>
+                <p>Created at: {{ article.created_at }}</p>
+                <p>Last updated: {{ article.updated_at }}</p>
             </section>
 
             <section id="comments">
-                <h2>Comments (3)</h2>
-                <div class="comment">
-                    <div class="comment-user">
-                        <img src="./src/images/user1.jpg">
-                        <a class="comment-username">Jane Doe</a>
-                        <p class="comment-date">12.09.2023, 10:15</p>
-                    </div>
-                    <p class="comment-text">This article really resonated with me. I've been trying to practice gratitude
-                        daily and it's made a huge difference!</p>
-                </div>
+                <h2>Comments ({{article.comments.count}})</h2>
+                {% if article.comments.count > 0 %}
+                    {% for comment in article.comments.all %}
+                        <div class="comment">
+                            <div class="comment-user">
+                                <img src="./src/images/user1.jpg">
+                                <a class="comment-username">{{comment.author_name}}</a>
+                                <p class="comment-date">{{comment.created_at}}</p>
+                            </div>
+                            <p class="comment-text">{{comment.text}}</p>
+                        </div>
+                    {% endfor %}
+                {% else %}
+                    No comments yet...
+                {% endif %}
 
-                <div class="comment">
-                    <div class="comment-user">
-                        <img src="./src/images/user2.jpg">
-                        <a class="comment-username">John Smith</a>
-                        <p class="comment-date">13.09.2023, 14:22</p>
-                    </div>
-                    <p class="comment-text">I appreciate the emphasis on relationships. It's easy to forget how important
-                        they are for our well-being. Lorem ipsum dolor sit amet consectetur adipisicing elit. Animi debitis
-                        perferendis necessitatibus harum, neque mollitia. Et facere architecto facilis culpa, vel rem
-                        voluptatibus quae corporis incidunt doloribus impedit a illo.</p>
-                </div>
-
-                <div class="comment">
-                    <div class="comment-user">
-                        <img src="./src/images/user2.jpg">
-                        <a class="comment-username">Anne Miller</a>
-                        <p class="comment-date">13.10.2022, 14:22</p>
-                    </div>
-                    <p class="comment-text">Lorem ipsum dolor sit amet consectetur adipisicing elit. Asperiores, cumque
-                        veniam nisi libero saepe voluptatum nam porro praesentium illo eaque nostrum molestias nemo
-                        voluptas. Neque necessitatibus ab numquam quam atque nihil, omnis delectus quas iusto placeat amet
-                        ad obcaecati perspiciatis molestias libero perferendis aut officiis cum consectetur quos? Magni,
-                        molestias? Nihil esse, tenetur qui id illum tempore, velit vero quisquam nisi recusandae eos
-                        voluptatum ea explicabo amet ratione eius rem corporis adipisci optio? Quos facilis ipsa,
-                        praesentium mollitia ratione error facere laboriosam ex ipsum repellendus explicabo odio tenetur
-                        neque, sed magni? Illum voluptates vel molestias, fugiat itaque dolor perferendis dolores hic illo
-                        odit at impedit incidunt autem amet exercitationem cupiditate magnam alias a inventore blanditiis,
-                        cumque nemo ut veritatis non. Atque dolores consequatur officiis! Atque officia a, quae modi
-                        voluptatem ea laudantium porro sint expedita dignissimos eveniet aut architecto soluta facilis nemo
-                        suscipit. Quasi veniam doloribus autem dignissimos laborum. Quas.</p>
-                </div>
             </section>
 
 
@@ -443,11 +363,11 @@
         </div>
     </footer>
 
-    <script src="./src/js/colorblind-module.js"></script>
+    <script src="{% static 'js/colorblind-module.js' %}"></script>
 
-    <script src="./src/js/article.js"></script>
-    <script src="./src/js/settings.js"></script>
-    <script src="./src/js/navbar.js"></script>
+    <script src="{% static 'js/article.js' %}"></script>
+    <script src="{% static 'js/settings.js' %}"></script>
+    <script src="{% static 'js/navbar.js' %}"></script>
     
 
 </body>

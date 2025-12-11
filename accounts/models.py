@@ -13,6 +13,7 @@ class CustomUser(AbstractUser):
     role = models.CharField(max_length=10, choices=ROLE_CHOICES, default='user')
     pfp = models.ImageField(upload_to='user_pfps', null=True, blank=True)
     birth_date = models.DateField(blank=True, null=True)
+    is_verified = models.BooleanField(default=False)
 
 
 class Specialization(models.Model):
@@ -42,7 +43,6 @@ class Psychologist(models.Model):
     user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
 
     specialization = models.ForeignKey(Specialization, on_delete=models.DO_NOTHING)
-    is_verified = models.BooleanField(default=False)
     years_of_exp = models.PositiveSmallIntegerField()
 
     sessions = models.IntegerField(default=0)
