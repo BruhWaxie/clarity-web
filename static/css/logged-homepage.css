@@ -218,7 +218,6 @@ body {
 
 .scale-div [class$='scale'] {
     width: 27px;
-    height: 100%;
     background-color: var(--secondary-color);
     border-top-left-radius: 5px;
     border-top-right-radius: 5px;

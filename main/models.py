@@ -17,7 +17,7 @@ class MoodEntry(models.Model):
     date = models.DateField()
     mood_percent = models.PositiveSmallIntegerField(
         validators=[
-            MinValueValidator(0),
+            MinValueValidator(10),
             MaxValueValidator(100)
         ]
     )
