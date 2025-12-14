@@ -43,7 +43,6 @@ INSTALLED_APPS = [
     'article',
     'affirmations',
     'quotes',
-    'mood_tracker',
     'messanger',
 
 ]
