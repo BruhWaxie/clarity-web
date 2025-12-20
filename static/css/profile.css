@@ -1,0 +1,256 @@
+.container {
+    display: flex;
+}
+
+.main-info-container {
+    width: 450px;
+    position: absolute;
+}
+
+.blank-container {
+    width: 450px;
+}
+
+.additional-info {
+    width: 900px;
+}
+
+.user-pfp {
+    width: 225px;
+    border-radius: 50%;
+}
+
+.doctors-name {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    margin: 0;
+    padding: 0;
+    justify-content: center;
+}
+
+.doctors-name span {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    margin: 0;
+}
+
+.prof {
+    margin: 0;
+    font-weight: 200;
+}
+
+.rating {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    margin-top: 8px;
+}
+
+.stars {
+    display: flex;
+    gap: 1px;
+}
+
+.rating span {
+    margin: 0;
+    padding: 0;
+    font-weight: 200;
+    font-size: 14px;
+}
+
+.achievements {
+    font-size: 13px;
+    margin-top: 4px;
+}
+
+.specifications {
+    display: flex;
+    flex-wrap: wrap;
+    width: 80%;
+    gap: 4px;
+    margin-top: 12px;
+}
+
+.chip {
+    font-size: 12px;
+    border-radius: 1000px;
+    padding: 5px 10px;
+    background: var(--secondary-color);
+}
+
+.icon-info>div {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    margin-top: 8px;
+}
+
+.icon-info {
+    margin-top: 16px;
+}
+
+.info-name {
+    margin: 0;
+    font-size: 14px;
+}
+
+.lower-info {
+    font-size: 12px;
+    margin: 0;
+    font-weight: 300;
+}
+
+.icon-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 30px;
+}
+
+.msg-btn {
+    position: static;
+    border-radius: 1000px;
+    margin-top: 20px;
+    padding: 8px 10px;
+    background: var(--primary-color);
+    
+}
+
+.msg-btn {
+    border: none;
+    cursor: pointer;
+    position: static;
+    display: block;
+    width: fit-content;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.content-div {
+    padding: 24px;
+    background: var(--third-color);
+    box-sizing: border-box;
+    border-radius: 30px;
+    font-size: 14px;
+    margin-bottom: 16px;
+}
+
+.content-div h4 {
+    margin-bottom: 0;
+    margin-top: 7px;
+    font-size: 16px;
+}
+
+.education li, .other-abilities li {
+    list-style: none;
+    margin-bottom: 8px;
+    margin-left: -20px;
+}
+
+.education {
+    margin-bottom: 32px;
+}
+
+.reviews h5 {
+    margin-top: 0;
+    font-weight: 200;
+}
+
+.time-name .name {
+    font-size: 14px;
+}
+
+.time-name .date {
+    font-size: 10px;
+    color: var(--sixth-color);
+}
+
+.icon {
+    background: linear-gradient(to top, #384D99 0%, #5E81FF 100%);
+    width: 40px;
+    height: 40px;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    box-sizing: border-box;
+    border-radius: 50%;
+    display: grid;
+    place-items: center;
+}
+
+.icon::before {
+    content: 'M';
+    font-size: 16px;
+    font-weight: 300;
+}
+
+.user {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+}
+
+
+.review-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.review-stars {
+    display: flex;
+    gap: 2px;
+}
+
+.review-stars svg {
+    width: 14px;
+}
+
+.primary-btn-overlay {
+    padding: 10px 16px;
+    background: none;
+    border: 2px solid var(--primary-color);
+    color: var(--color-text);
+    border-radius: 12px;
+    margin-top: 30px;
+    box-sizing: border-box;
+}
+
+.primary-btn-overlay:hover {
+    background: var(--primary-color);
+    color: var(--third-color);
+}
+
+.we-have-checked {
+    font-size: 10px;
+    font-weight: 500;
+    padding-top: 20px;
+}
+
+.marks span {
+    font-weight: 200;
+}
+
+.marks {
+    margin-top: 8px;
+}
+
+.verified-status .content {
+    width: 50%;
+}
+
+.verified-status {
+    display: flex;
+    position: relative;
+    height: 275px;
+    overflow: hidden;
+}
+
+.verified-status .image {
+    position: absolute;
+    bottom: -2px;
+    right: 80px;
+}

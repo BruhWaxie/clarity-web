@@ -1,0 +1,61 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>How to become happier? - Clarity</title>
+
+    <link rel="stylesheet" href="{% static '/css/base.css' %}">
+    <link rel="stylesheet" href="{% static '/css/fonts.css' %}">
+    <link rel="stylesheet" href="{% static '/css/add-mood.css' %}">
+
+    <link id="themeChanger" rel="stylesheet" href="{% static '/css/dark-theme.css' %}">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@100..900&display=swap" rel="stylesheet">
+    <link rel="shortcut icon" href="./src/svgs/basic/favicon.svg" type="image/svg">
+</head>
+
+<body>
+    <main>
+        <h2>How are you feeling?</h2>
+        <img src="{% static '/img/lotus-sequence/lotus-25.png' %}" alt="" class="lotus-img">
+        <div class="img-space"></div>
+        <p class="mood-tracker">Normal</p>
+        <form method="post">
+            {% csrf_token %}
+            <div class="range">
+                <input id="moodInput" name="mood" min="0" max="100" type="range">
+                <div class="slider"></div>
+            </div>
+            <button type="submit" class="submitButton">Add Mood</button>
+        </form>
+        
+
+        <div class="pulsing-gradient"></div>
+
+        <div class="down-pulse"></div>
+        <div class="top-pulse"></div>
+
+        <div class="circle-pulsating circle1"></div>
+        <div class="circle-pulsating circle2"></div>
+        
+        
+    </main>
+
+    <div class="left-border"></div>
+    <div class="right-border"></div>
+    <div class="overlap"></div>
+
+
+    <script src="{% static '/js/colorblind-module.js' %}"></script>
+
+    <script src="{% static '/js/add-mood.js' %}"></script>
+    
+
+
+</body>

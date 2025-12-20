@@ -13,11 +13,11 @@ class Week(models.Model):
 
 class MoodEntry(models.Model):
     user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
-    week = models.ForeignKey(Week, on_delete=models.CASCADE, related_name='moods')
+    week = models.ForeignKey(Week, null=True, blank=True, on_delete=models.CASCADE, related_name='moods')
     date = models.DateField()
     mood_percent = models.PositiveSmallIntegerField(
         validators=[
-            MinValueValidator(10),
+            MinValueValidator(0),
             MaxValueValidator(100)
         ]
     )

@@ -8,38 +8,26 @@
     <title>Affirmations</title>
     
 
-    <link rel="stylesheet" href="{% static 'css/affirmations/affirmations.css' %}">
-    <link rel="stylesheet" href="./src/css/fonts.css">
-    <link rel="stylesheet" href="./src/css/affirmations.css">
+    <link rel="stylesheet" href="{% static 'css/affirmations.css' %}">
+    <link rel="stylesheet" href="{% static 'css/fonts.css' %}">
+    <link rel="stylesheet" href="{% static 'css/base.css' %}">
 
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@100..900&display=swap" rel="stylesheet">
 
-    <link id="themeChanger" rel="stylesheet" href="./src/css/dark-theme.css">
+    <link id="themeChanger" rel="stylesheet" href="{% static 'css/dark-theme.css' %}">
     <link rel="shortcut icon" href="./src/svgs/basic/favicon.svg" type="image/svg">
 </head>
 
 <body>
     <div class="tiktok-scroll">
-        <div class="slide active">
-            <img class="background-image" src="./src/img/backgrounds/afirmation&quotes/chilli-9202873_1280.jpg" alt="">
-            <p>Everywhere I go, I attract love, peace and harmony.</p>
-        </div>
-
-        <div class="slide">
-            <img class="background-image" src="./src/img/backgrounds/afirmation&quotes/sailboat-9597523_1280.jpg"
-                alt="">
-            <p>I am grateful for every moment of my life.</p>
-        </div>
-
-        <div class="slide">
-            <img class="background-image" src="./src/img/backgrounds/afirmation&quotes/tree-7619791_1280.jpg" alt="">
-            <p>I radiate positivity and calm energy.</p>
+        <div class="feed" id="feed">
+            {% include "affirmations/_affirmation_list.html" %}
         </div>
     </div>
 
 
-    <a class="back-btn" href="/logged-homepage.html">
+    <a class="back-btn" href="homepage">
         <svg viewBox="0 -0.5 17 17" version="1.1" xmlns="http://www.w3.org/2000/svg"
             xmlns:xlink="http://www.w3.org/1999/xlink" class="si-glyph si-glyph-arrow-left" fill="#fff">
             <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
@@ -150,8 +138,8 @@
         </div>
     </div>
 
-    <script src="./src/js/colorblind-module.js"></script>
-    <script src="./src/js/affirmations.js"></script>
+    <script src="{% static 'js/colorblind-module.js' %}"></script>
+    <script src="{% static 'css/affirmations.js' %}"></script>
 </body>
 
 </html>

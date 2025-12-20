@@ -1,0 +1,91 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mood | clarity</title>
+
+    <link rel="stylesheet" href="{% static 'css/base.css' %}">
+    <link rel="stylesheet" href="{% static 'css/fonts.css' %}">
+    <link rel="stylesheet" href="{% static 'css/mood-tracker.css' %}">
+
+    <link id="themeChanger" rel="stylesheet" href="{% static 'css/dark-theme.css' %}">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@100..900&display=swap" rel="stylesheet">
+    <link rel="shortcut icon" href="./src/svgs/basic/favicon.svg" type="image/svg">
+</head>
+
+<body>
+    <div class="m-container">
+        {% with week=weeks_data.0 %}
+        <div class="weeks">
+            {% if page_obj.has_previous %}
+            <a href="?page={{ page_obj.previous_page_number }}" id="prevWeekBtn">
+                {% else %}
+                <span id="prevWeekBtn" class="disabled">
+                    {% endif %}
+                    <!-- SVG -->
+                    <svg class="arrow arr-l " viewBox="0 0 24 24">
+                        <path
+                            d="M15.2 10.49L10.02 5.31C9.34 4.64 8.18 5.12 8.18 6.08v11.84c0 .96 1.16 1.44 1.84.76l5.18-5.18c.83-.82.83-2.18 0-3z"
+                            fill="var(--color-text)" />
+                    </svg>
+                    {% if page_obj.has_previous %}
+            </a>
+            {% else %}
+            </span>
+            {% endif %}
+
+            <span class="week-label">
+                Week #{{ week.week_start|date:"W" }}
+            </span>
+
+            {% if page_obj.has_next %}
+            <a href="?page={{ page_obj.next_page_number }}" id="nextWeekBtn">
+                {% else %}
+                <span id="nextWeekBtn" class="disabled">
+                    {% endif %}
+                    <svg class="arrow arr-l" viewBox="0 0 24 24">
+                        <path
+                            d="M8.8 13.5L13.98 18.68c.68.68 1.84.2 1.84-.76V6.08c0-.96-1.16-1.44-1.84-.76L8.8 10.49c-.83.82-.83 2.18 0 3z"
+                            fill="var(--color-text)" />
+                    </svg>
+                    {% if page_obj.has_next %}
+            </a>
+            {% else %}
+            </span>
+            {% endif %}
+        </div>
+
+        <div class="graph">
+            <div class="mon-scale" style="height: {{ week.week_moods.0 }}%"></div>
+            <div class="tue-scale" style="height: {{ week.week_moods.1 }}%"></div>
+            <div class="wed-scale" style="height: {{ week.week_moods.2 }}%"></div>
+            <div class="thu-scale" style="height: {{ week.week_moods.3 }}%"></div>
+            <div class="fri-scale" style="height: {{ week.week_moods.4 }}%"></div>
+            <div class="sat-scale" style="height: {{ week.week_moods.5 }}%"></div>
+            <div class="sun-scale" style="height: {{ week.week_moods.6 }}%"></div>
+        </div>
+        {% endwith %}
+        <div class="days-names">
+            <div>MON</div>
+            <div>TUE</div>
+            <div>WED</div>
+            <div>THU</div>
+            <div>FRI</div>
+            <div>SAT</div>
+            <div>SUN</div>
+        </div>
+
+        <div class="review">
+            <p class="no-review">No review yet.</p>
+        </div>
+        <a href="/add-mood" class="btn add-mood">Add mood</a>
+    </div>
+
+    <script src="{% static 'js/colorblind-module.js' %}"></script>
+</body>

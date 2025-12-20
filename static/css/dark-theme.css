@@ -1,7 +1,7 @@
 :root {
     /* Background colors */
     --color-bg: #000;
-    --background-img: url("../img/backgrounds/main-bg-black.png") no-repeat left center fixed;
+    --background-img: url("/static/img/main-bg-black.png") no-repeat left center fixed;
     --bg-size: 80%;
     --blend-mode: normal;
     --brightness: brightness(50%);

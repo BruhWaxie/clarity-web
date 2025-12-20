@@ -110,7 +110,7 @@
                         </svg>
                     </button>
                     <button class="profile-dropdown">
-                        <div class="profile-picture"></div>
+                        <img src="{{ user.pfp.url }}" class="profile-picture">
                     </button>
 
                     <div class="profile-dropdown-menu dropdown-basis hide" aria-hidden="true">
@@ -427,19 +427,20 @@
 
     <div class="main-container">
         <main>
-            <h2 class="gm-msg">Good Morning, User!</h2>
+            <h2 class="gm-msg">Welcome, {{ user.first_name }}!</h2>
+
             <div class="main-information">
-                <div class="mood-tracker">
+                <a href="/mood" class="mood-tracker">
                     <p>Mood tracker</p>
                     <div class="stats">
                         <div class="scale-div">
-                            <div class="mon-scale"></div>
-                            <div class="tue-scale"></div>
-                            <div class="wed-scale"></div>
-                            <div class="thu-scale"></div>
-                            <div class="fri-scale"></div>
-                            <div class="sat-scale"></div>
-                            <div class="sun-scale"></div>
+                            <div class="mon-scale" style="height: {{ week_moods.0 }}%"></div>
+                            <div class="tue-scale" style="height: {{ week_moods.1 }}%"></div>
+                            <div class="wed-scale" style="height: {{ week_moods.2 }}%"></div>
+                            <div class="thu-scale" style="height: {{ week_moods.3 }}%"></div>
+                            <div class="fri-scale" style="height: {{ week_moods.4 }}%"></div>
+                            <div class="sat-scale" style="height: {{ week_moods.5 }}%"></div>
+                            <div class="sun-scale" style="height: {{ week_moods.6 }}%"></div>
                         </div>
                         <hr class="stat-divider">
                         <div class="stat-days">
@@ -457,7 +458,7 @@
                         <p>Your mood has become more stable through week 3 of your therapy and we can see that you had a
                             better result then previous weeks. Keep going and you will reach your best result ever.</p>
                     </div>
-                </div>
+                </a>
                 <a href="/affirmations.html">
                     <div class="afirms-x-quotes">
                         <div href="/affirmations.html" class="item-frame">

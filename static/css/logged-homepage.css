@@ -206,6 +206,7 @@ body {
     height: 125px;
     display: flex;
     justify-content: space-around;
+    align-items: flex-end; /* ← ВАЖЛИВО */
     margin-top: 36px;
 }
 
@@ -221,6 +222,8 @@ body {
     background-color: var(--secondary-color);
     border-top-left-radius: 5px;
     border-top-right-radius: 5px;
+    min-height: 0px;
+    transition: height 0.3s ease;
 }
 
 .stat-day {

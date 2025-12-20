@@ -2,39 +2,140 @@ from django.views.generic import ListView, DetailView, CreateView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse_lazy
 from .models import Week, MoodEntry
-from django.shortcuts import render
+from django.shortcuts import render, redirect
+from collections import defaultdict
+from datetime import date, timedelta, date
+from django.contrib.auth.decorators import login_required
 
+def homepage_view(request):
+    
+    today = date.today()
+    monday = today - timedelta(days=today.weekday())
 
-class WeekListView(LoginRequiredMixin, ListView):
-    model = Week
-    template_name = "main/logged-homepage.html"
-    context_object_name = "weeks"
-    ordering = ["-week_start_date"]
+    entries = MoodEntry.objects.filter(
+        user=request.user,
+        date__gte=monday,
+        date__lte=monday + timedelta(days=6)
+    )
 
-class WeekDetailView(LoginRequiredMixin, DetailView):
-    model = Week
-    template_name = "main/logged-homepage.html"
-    context_object_name = "week"
+    # 0 — понеділок, 6 — неділя
+    week_moods = {
+        0: 0,
+        1: 0,
+        2: 0,
+        3: 0,
+        4: 0,
+        5: 0,
+        6: 0,
+    }
+
+    for entry in entries:
+        weekday = entry.date.weekday()
+        week_moods[weekday] = entry.mood_percent
+
+    return render(
+        request,
+        'main/logged-homepage.html',
+        {
+            'week_moods': week_moods
+        }
+    )
+
+class WeeksListView(LoginRequiredMixin, ListView):
+    """
+    object_list = список дат-понеділків (week_start_date)
+    """
+    template_name = "main/mood-tracker.html"
+    context_object_name = "weeks"   # це буде список понеділків на поточній сторінці
+    paginate_by = 6                # скільки тижнів на сторінку
+
+    def get_queryset(self):
+        # Беремо всі дати записів користувача
+        dates = (
+            MoodEntry.objects
+            .filter(user=self.request.user)
+            .values_list("date", flat=True)
+        )
+
+        # Перетворюємо кожну дату на "понеділок того тижня"
+        mondays = set()
+        for d in dates:
+            monday = d - timedelta(days=d.weekday())  # weekday: 0=пн ... 6=нд
+            mondays.add(monday)
+
+        # Сортуємо від нового до старого
+        return sorted(mondays, reverse=True)
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
 
-        context["moods"] = self.object.moods.filter(user=self.request.user).order_by("date")
+        # На поточній сторінці ListView покладе тижні в context['weeks']
+        page_mondays = context["weeks"]
 
+        weeks_data = []
+        if not page_mondays:
+            context["weeks_data"] = weeks_data
+            return context
+
+        # Щоб не робити 1 запит на тиждень — тягнемо всі записи в діапазоні сторінки одним запитом
+        min_monday = min(page_mondays)
+        max_monday = max(page_mondays)
+        range_start = min_monday
+        range_end = max_monday + timedelta(days=6)
+
+        entries = (
+            MoodEntry.objects
+            .filter(
+                user=self.request.user,
+                date__gte=range_start,
+                date__lte=range_end
+            )
+            .only("date", "mood_percent")
+        )
+
+        # Групуємо записи по понеділках
+        bucket = defaultdict(list)
+        for e in entries:
+            monday = e.date - timedelta(days=e.date.weekday())
+            bucket[monday].append(e)
+
+        # Формуємо week_moods як у твоєму прикладі
+        for monday in page_mondays:
+            week_moods = {i: 0 for i in range(7)}  # 0=пн..6=нд
+
+            for e in bucket.get(monday, []):
+                week_moods[e.date.weekday()] = e.mood_percent
+
+            weeks_data.append({
+                "week_start": monday,
+                "week_end": monday + timedelta(days=6),
+                "week_moods": week_moods,
+            })
+
+        context["weeks_data"] = weeks_data
         return context
 
-class MoodEntryCreateView(LoginRequiredMixin, CreateView):
-    model = MoodEntry
-    fields = ["week", "date", "mood_percent"]
-    template_name = "mood/moodentry_form.html"
-    success_url = reverse_lazy("week_list")
+@login_required
+def add_mood_view(request):
+    today = date.today()
 
-    def form_valid(self, form):
-        form.instance.user = self.request.user
-        return super().form_valid(form)
+    if request.method == "POST":
+        mood_percent = int(request.POST.get("mood"))
 
-def homepage_view(request):
-    last_week = MoodEntry.objects.filter(user=request.user).order_by('-date')
-    return render(request, 'main/logged-homepage.html', context= {
+        MoodEntry.objects.update_or_create(
+            user=request.user,
+            date=today,
+            defaults={
+                "mood_percent": mood_percent
+            }
+        )
 
-    })
+        return redirect("homepage")  # або інша сторінка
+
+    return render(
+        request,
+        "main/add-mood.html",
+        {
+            "today": today
+        }
+    )

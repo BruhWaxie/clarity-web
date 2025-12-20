@@ -284,3 +284,42 @@ document.querySelectorAll('.app-icon').forEach(btn => {
   });
 });
 
+const feed = document.getElementById("feed");
+let offset = document.querySelectorAll(".slide").length;
+let loading = false;
+
+async function loadMore() {
+  if (loading) return;
+  loading = true;
+
+  const res = await fetch(`/affirmations/feed/?offset=${offset}`);
+  const html = await res.text();
+
+  if (html.trim() !== "") {
+    feed.insertAdjacentHTML("beforeend", html);
+    offset = document.querySelectorAll(".slide").length;
+    observeLast();
+  }
+
+  loading = false;
+}
+
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      observer.unobserve(entry.target);
+      loadMore();
+    }
+  });
+}, {
+  root: document.querySelector(".feed"),
+  threshold: 0.8
+});
+
+function observeLast() {
+  const slides = document.querySelectorAll(".slide");
+  const last = slides[slides.length - 1];
+  if (last) observer.observe(last);
+}
+
+observeLast();
