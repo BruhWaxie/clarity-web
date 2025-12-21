@@ -141,8 +141,7 @@
 }
 
 .content-div h4 {
-    margin-bottom: 0;
-    margin-top: 7px;
+    margin: 0;
     font-size: 16px;
 }
 
@@ -198,6 +197,7 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
+    margin-bottom: 12px;
 }
 
 .review-stars {

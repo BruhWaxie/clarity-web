@@ -34,13 +34,13 @@ class Problem(models.Model):
     def __str__(self):
         return self.name
 
-class Abilities(models.Model):
-    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name="abilities")
-
-    ability = models.TextField()
+class TypeOfTherapy(models.Model):
+    name = models.CharField(max_length=255)
+    def __str__(self):
+        return self.name
 
 class Psychologist(models.Model):
-    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
+    user = models.OneToOneField(CustomUser, on_delete=models.CASCADE, related_name='psychologist')
 
     specialization = models.ForeignKey(Specialization, on_delete=models.DO_NOTHING)
     years_of_exp = models.PositiveSmallIntegerField()
@@ -48,15 +48,21 @@ class Psychologist(models.Model):
     sessions = models.IntegerField(default=0)
     problems = models.ManyToManyField(Problem)
     languages = models.ManyToManyField('Language', blank=True)
+    type_of_therapy = models.ManyToManyField(TypeOfTherapy, blank=True)
     place = models.TextField()
 
     description = models.TextField()
+    def __str__(self):
+        return self.user.first_name + ' ' + self.user.last_name
 
-    review = models.FloatField(validators=[
-            MinValueValidator(0),
-            MaxValueValidator(5)
-        ])
 
+
+class Abilities(models.Model):
+    user = models.ForeignKey(Psychologist, on_delete=models.CASCADE, related_name="abilities")
+
+    ability = models.TextField()
+    def __str__(self):
+        return self.ability
 
 class Education(models.Model):
     psychologist = models.ForeignKey(
