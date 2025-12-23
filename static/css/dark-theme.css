@@ -30,7 +30,7 @@
     /* Buttons */
     --button-bg: #fff;
     --button-text: #000;
-    --button-bg-hover: #ccc;
+    --button-bg-hover: #bbb;
 
     /* Settings */
     --overflow-bg-color: #2f2f2f30;
@@ -84,4 +84,8 @@
     /* Messanger */
     --message-bg: #1f1f1f88;
     --blue-bubble: #4761c0;
+
+    /* Profiles */
+    --content-box-color: var(--third-color);
+    --chip-color: var(--secondary-color);
 }

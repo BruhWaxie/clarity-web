@@ -1,16 +1,14 @@
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.views import LoginView, LogoutView
 from django.views.generic import CreateView
 from django.contrib.auth.models import User
 from django.urls import reverse_lazy
-
-from accounts.models import CustomUser, Abilities
+from django.views.decorators.http import require_http_methods
 from django.contrib.auth.decorators import login_required
+from django.http import JsonResponse
 from django.db.models import Avg, Count, Prefetch
-from .models import Psychologist, Education, DiplomaImage, Review
 
-
-
+from accounts.models import CustomUser, Abilities, Psychologist, Education, DiplomaImage, Review, Problem
 from accounts.forms import LoginForm, RegisterForm
 
 
@@ -33,7 +31,6 @@ class RegisterView(CreateView):
 
 @login_required
 def profile_view(request, username=None):
-    # Якщо username не передали — відкриваємо свій профіль
     if username:
         user = get_object_or_404(CustomUser, username=username)
     else:
@@ -43,7 +40,6 @@ def profile_view(request, username=None):
         'profile_user': user,
         'psychologist': None,
 
-        # Загальні поля
         'rating': 0,
         'reviews_count': 0,
         'sessions_count': 0,
@@ -79,16 +75,17 @@ def profile_view(request, username=None):
             .get(user=user)
         )
 
-        # ⭐ рейтинг
-        rating = psychologist.reviews.aggregate(
-            avg=Avg('rating')
-        )['avg'] or 0
+        rating_avg = psychologist.reviews.aggregate(avg=Avg('rating'))['avg']
+        rating = rating_avg if rating_avg is not None else 0
+        rating_for_js = float(rating) if rating else 0.0
+        
         last_review = psychologist.reviews.order_by('-created_at').first()
 
         context.update({
             'psychologist': psychologist,
-
-            'rating': round(rating, 1),
+            'psychologist_id': psychologist.id,
+            
+            'rating': rating,
             'reviews_count': psychologist.reviews.count(),
             'sessions_count': psychologist.sessions,
             'last_review': last_review,
@@ -104,8 +101,51 @@ def profile_view(request, username=None):
             'educations': psychologist.educations.all(),
             'abilities': psychologist.abilities.all(),
             'type_of_therapy': psychologist.type_of_therapy.all(),
+            'rating_for_js': rating_for_js,
 
             'reviews': psychologist.reviews.all().order_by('-created_at'),
         })
 
     return render(request, 'main/profile.html', context)
+
+
+@login_required
+@require_http_methods(["POST"])
+def add_review_view(request):
+    try:
+        rating = request.POST.get('rating')
+        problem_id = request.POST.get('problem')
+        text = request.POST.get('text')
+        psychologist_id = request.POST.get('psychologist')
+        
+        if not all([rating, problem_id, text, psychologist_id]):
+            return JsonResponse({'success': False, 'error': 'Missing required fields'}, status=400)
+        
+        rating = int(rating)
+        if rating < 1 or rating > 5:
+            return JsonResponse({'success': False, 'error': 'Invalid rating value'}, status=400)
+        
+        psychologist = Psychologist.objects.get(id=int(psychologist_id))
+        problem = Problem.objects.get(id=int(problem_id))
+        
+        review = Review.objects.create(
+            author=request.user,
+            psychologist=psychologist,
+            problem=problem,
+            rating=rating,
+            text=text
+        )
+        
+        return JsonResponse({
+            'success': True,
+            'review_id': review.id
+        })
+        
+    except Psychologist.DoesNotExist:
+        return JsonResponse({'success': False, 'error': 'Psychologist not found'}, status=404)
+    except Problem.DoesNotExist:
+        return JsonResponse({'success': False, 'error': 'Problem not found'}, status=404)
+    except ValueError:
+        return JsonResponse({'success': False, 'error': 'Invalid data format'}, status=400)
+    except Exception as e:
+        return JsonResponse({'success': False, 'error': str(e)}, status=500)

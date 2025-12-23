@@ -78,7 +78,7 @@
     font-size: 12px;
     border-radius: 1000px;
     padding: 5px 10px;
-    background: var(--secondary-color);
+    background: var(--chip-color);
 }
 
 .icon-info>div {
@@ -116,7 +116,11 @@
     margin-top: 20px;
     padding: 8px 10px;
     background: var(--primary-color);
-    
+    color: var(--color-bg);
+}
+
+.msg-btn svg {
+    fill: var(--color-bg);
 }
 
 .msg-btn {
@@ -133,7 +137,7 @@
 
 .content-div {
     padding: 24px;
-    background: var(--third-color);
+    background: var(--content-box-color);
     box-sizing: border-box;
     border-radius: 30px;
     font-size: 14px;
@@ -159,14 +163,13 @@
     margin-top: 0;
     font-weight: 200;
 }
-
 .time-name .name {
     font-size: 14px;
 }
 
 .time-name .date {
     font-size: 10px;
-    color: var(--sixth-color);
+    color: var(--sixth-text-color);
 }
 
 .icon {
@@ -194,6 +197,7 @@
 
 
 .review-head {
+    padding-top: 10px;
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -213,7 +217,7 @@
     padding: 10px 16px;
     background: none;
     border: 2px solid var(--primary-color);
-    color: var(--color-text);
+    color: var(--primary-color);
     border-radius: 12px;
     margin-top: 30px;
     box-sizing: border-box;
@@ -253,4 +257,142 @@
     position: absolute;
     bottom: -2px;
     right: 80px;
+}
+
+.profile-btns {
+    display: flex;
+    gap: 4px;
+    align-items: center;
+}
+
+.btn-round-overlay {
+    background: none; 
+    border: 2px solid var(--primary-color);
+    color: var(--primary-color);
+    border-radius: 1000px;
+    margin-top: 20px;
+    padding: 8px 10px;
+}
+
+.btn-round-overlay:hover {
+    background: var(--primary-color);
+    color: var(--color-bg);
+}
+
+body {
+    margin: 0;
+}
+
+.review-overlay {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    display: none;
+    margin: 0;
+    z-index: 9999;
+    align-items: center;
+    justify-content: center;
+    
+}
+
+.review-overlay.open {
+    backdrop-filter: blur(25px);
+    display: flex;
+}
+
+.add-review-menu {
+    width: 800px;
+    background-color: var(--secondary-color);
+    border-radius: 25px;
+    overflow: hidden;
+    z-index: 10000;
+}
+
+.menu-head {
+    padding: 20px;
+    border-bottom: 2px solid var(--fourth-color);
+}
+
+/* Контейнер для зірок */
+.star-rating {
+    display: flex;
+    flex-direction: row-reverse; /* Зворотний порядок для правильного виділення */
+    justify-content: flex-end;
+    gap: 5px;
+}
+
+/* Приховуємо стандартні радіо-кнопки */
+.star-rating input[type="radio"] {
+    display: none;
+}
+
+/* Стиль для зірки (label) */
+.star-rating label {
+    font-size: 30px; /* Розмір зірок */
+    color: #ccc;     /* Колір неактивної зірки (сірий) */
+    cursor: pointer;
+    transition: color 0.2s;
+}
+
+/* При наведенні на зірку та на всі зірки праворуч від неї (оскільки row-reverse) */
+.star-rating label:hover,
+.star-rating label:hover ~ label,
+/* Коли радіо-кнопка обрана, підсвічуємо відповідну зірку та всі за нею */
+.star-rating input[type="radio"]:checked ~ label {
+    color: #FFD700; /* Золотий колір активних зірок */
+}
+
+.star-rating-box {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+}
+
+.star-rating svg {
+    width: 20px;
+    margin: 0;
+    padding: 0;
+}
+
+.star-rating-box label {
+    margin: 0;
+    padding: 0;
+}
+
+.form-group {
+    padding: 20px;
+}
+
+.star-rating-box {
+    margin-bottom: 12px;
+}
+
+textarea {
+    margin-top: 8px;
+    background: none;
+    width: 100%;
+    height: 200px;
+    border-radius: 10px;
+    padding: 7.5px;
+    box-sizing: border-box;
+    color: white;
+    overflow: auto;
+    resize: none;
+    scrollbar-width: thin;
+    scrollbar-color: var(--fourth-color) var(--secondary-color);
+    
+}
+
+select {
+    margin-bottom: 12px;
+}
+
+.btn-post {
+    padding: 7px 20px;
+    border-radius: 1000px;
+    margin-top: 24px;
+}
+
+.btn-post:hover {
+    background: var(--button-bg-hover);
 }

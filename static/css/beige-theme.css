@@ -91,4 +91,8 @@
     /* Messanger */
     --message-bg: #f1f1f188;
     --blue-bubble: #8192cf;
+
+    /* Profiles */
+    --content-box-color: rgba(0,0,0, 0.05);
+    --chip-color: var(--popup-color-blue);
 }

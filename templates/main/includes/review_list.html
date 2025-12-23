@@ -1,0 +1,7 @@
+{% for review in reviews %}
+    <div class="review-card">
+        <p class="author">{{ review.author.username }}</p>
+        <p class="date">{{ review.created_at|date:"d.m.Y" }}</p>
+        <p class="text">{{ review.text }}</p>
+        </div>
+{% endfor %}
