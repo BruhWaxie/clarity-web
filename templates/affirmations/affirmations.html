@@ -6,28 +6,52 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Affirmations</title>
-    
 
-    <link rel="stylesheet" href="{% static 'css/affirmations.css' %}">
-    <link rel="stylesheet" href="{% static 'css/fonts.css' %}">
     <link rel="stylesheet" href="{% static 'css/base.css' %}">
+    <link rel="stylesheet" href="{% static 'css/fonts.css' %}">
+    <link rel="stylesheet" href="{% static 'css/affirmations.css' %}">
 
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@100..900&display=swap" rel="stylesheet">
 
-    <link id="themeChanger" rel="stylesheet" href="{% static 'css/dark-theme.css' %}">
+    <link id="themeChanger" rel="stylesheet" href="./src/css/dark-theme.css">
     <link rel="shortcut icon" href="./src/svgs/basic/favicon.svg" type="image/svg">
+
+    <style>
+        #end-screen {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; width: 100vw; height: 100vh;
+            background: black;
+            color: white;
+            z-index: 9999;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+        }
+        #end-screen.active { display: flex; }
+        #end-screen h1 { font-family: 'Lexend', sans-serif; font-size: 2rem; }
+    </style>
 </head>
 
 <body>
-    <div class="tiktok-scroll">
-        <div class="feed" id="feed">
-            {% include "affirmations/_affirmation_list.html" %}
+    <div class="tiktok-scroll" id="slider-container">
+        {% for slide in initial_slides %}
+        <div class="slide {% if forloop.first %}active{% endif %}" 
+             data-id="{{ slide.id }}" 
+             data-liked="{{ slide.is_liked_by_user|yesno:'true,false' }}">
+            <img class="background-image" src="{{ slide.media.url }}" alt="" crossorigin="anonymous">
+            <p>{{ slide.text }}</p>
         </div>
+        {% endfor %}
+    </div>
+
+    <div id="end-screen">
+        <h1>Everything comes to an end.</h1>
     </div>
 
 
-    <a class="back-btn" href="homepage">
+    <a class="back-btn" href="/logged-homepage.html">
         <svg viewBox="0 -0.5 17 17" version="1.1" xmlns="http://www.w3.org/2000/svg"
             xmlns:xlink="http://www.w3.org/1999/xlink" class="si-glyph si-glyph-arrow-left" fill="#fff">
             <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
@@ -67,7 +91,7 @@
     </div>
 
     <div class="liking-pannel">
-        <button class="circle-btn toFav">
+        <button class="circle-btn toFav" id="likeBtn">
             <svg class="selected outlined" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
                 <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
@@ -102,8 +126,29 @@
         </button>
     </div>
 
-    <div class="overlay-share-window">
+    <div class="overlay-share-window"></div>
+
+    <div class="main-window">
+        <button onclick="toggleShareMenu()" class="cross"><svg fill="#fff" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg"><path d="M18.8,16l5.5-5.5c0.8-0.8,0.8-2,0-2.8l0,0C24,7.3,23.5,7,23,7c-0.5,0-1,0.2-1.4,0.6L16,13.2l-5.5-5.5 c-0.8-0.8-2.1-0.8-2.8,0C7.3,8,7,8.5,7,9.1s0.2,1,0.6,1.4l5.5,5.5l-5.5,5.5C7.3,21.9,7,22.4,7,23c0,0.5,0.2,1,0.6,1.4 C8,24.8,8.5,25,9,25c0.5,0,1-0.2,1.4-0.6l5.5-5.5l5.5,5.5c0.8,0.8,2.1,0.8,2.8,0c0.8-0.8,0.8-2.1,0-2.8L18.8,16z"></path></svg></button>
+        <p class="window-title">Share</p>
+        <div class="image-frame"></div>
+        <hr>
+        <div class="socials">
+            <a href="#" class="app-icon" data-platform="instagram">
+                <img src="{% static 'img/social-instagram-new-circle-512.png' %}" alt="" class="logo"><p class="name">Instagram</p>
+            </a>
+            <a href="#" class="app-icon" data-platform="telegram">
+                <img src="{% static 'img/telegram-circle-icon-for-web-des.png' %}" alt="" class="logo"><p class="name">Telegram</p>
+            </a>
+            <a href="#" class="app-icon" data-platform="whatsapp">
+                <img src="{% static 'img/4485687.png' %}" alt="" class="logo"><p class="name">WhatsApp</p>
+            </a>
+            <a href="#" class="app-icon" data-platform="more">
+                <img src="{% static 'img/more.png' %}" alt="" class="logo"><p class="name">More</p>
+            </a>
+        </div>
     </div>
+
     <div class="main-window">
         <button onclick="toggleShareMenu()" class="cross">
             <svg fill="#fff" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
@@ -138,8 +183,11 @@
         </div>
     </div>
 
-    <script src="{% static 'js/colorblind-module.js' %}"></script>
-    <script src="{% static 'css/affirmations.js' %}"></script>
+    <script>
+        const CSRF_TOKEN = '{{ csrf_token }}';
+    </script>
+    <script src="./src/js/colorblind-module.js"></script>
+    <script src="./src/js/affirmations.js"></script>
 </body>
 
 </html>

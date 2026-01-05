@@ -1,7 +1,9 @@
 from django.urls import path
-from . import views
+from .views import affirmations_page, GetNextAffirmation, LikeAffirmationView
 
 urlpatterns = [
-    path("", views.affirmations_page, name="page"),
-    path("feed/", views.affirmations_feed, name="feed"),
+    # Це URL, який ви вводите в браузері (повертає HTML)
+    path('', affirmations_page, name='affirmations_home'),
+    path('api/next/', GetNextAffirmation.as_view(), name='api-next-slide'),
+    path('api/like/<int:pk>/', LikeAffirmationView.as_view(), name='api-like'),
 ]

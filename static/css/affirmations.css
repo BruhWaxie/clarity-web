@@ -434,3 +434,161 @@ body {
   width: 400px;
   text-align: center;
 }
+
+/* affirmations.css */
+body {
+    margin: 0;
+    padding: 0;
+    background-color: #000;
+    color: white;
+    font-family: 'Lexend', sans-serif;
+    overflow: hidden; /* Забороняємо стандартний скрол */
+    height: 100vh;
+    width: 100vw;
+}
+
+/* Контейнер */
+.tiktok-scroll {
+    position: relative;
+    width: 100%;
+    height: 100%;
+}
+
+/* Слайд: за замовчуванням прихований */
+.slide {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.5s ease-in-out, visibility 0.5s;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1;
+}
+
+/* Активний слайд: видимий */
+.slide.active {
+    opacity: 1;
+    visibility: visible;
+    z-index: 2;
+}
+
+/* Картинка фону */
+.background-image {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    filter: brightness(0.6); /* Затемнення */
+    z-index: -1;
+}
+
+/* Текст */
+.slide p {
+    font-size: 1.5rem;
+    text-align: center;
+    padding: 20px;
+    max-width: 80%;
+    z-index: 3;
+    text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+}
+
+/* --- UI Controls --- */
+.forward-buttons {
+    position: absolute;
+    right: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    z-index: 10;
+}
+
+.forward-buttons button {
+    background: rgba(255,255,255,0.2);
+    border: none;
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Лайки та UI */
+.liking-pannel {
+    position: absolute;
+    right: 20px;
+    bottom: 100px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    z-index: 10;
+}
+
+.circle-btn {
+    background: transparent;
+    border: none;
+    cursor: pointer;
+}
+
+.circle-btn svg {
+    width: 35px;
+    height: 35px;
+    stroke: white;
+    fill: none;
+    stroke-width: 2px;
+}
+
+/* Логіка заповненого серця */
+.circle-btn .filled { display: none; fill: #ff4d4d; stroke: none; }
+.circle-btn .outlined { display: block; }
+
+.circle-btn.liked .filled { display: block; }
+.circle-btn.liked .outlined { display: none; }
+
+/* Share Window */
+.overlay-share-window {
+    display: none;
+    position: fixed;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(0,0,0,0.5);
+    z-index: 20;
+}
+.overlay-share-window.active { display: block; }
+
+.main-window {
+    display: none;
+    position: fixed;
+    bottom: 0; left: 0; right: 0;
+    background: #222;
+    border-radius: 20px 20px 0 0;
+    padding: 20px;
+    z-index: 21;
+    transform: translateY(100%);
+    transition: transform 0.3s ease;
+}
+.main-window.opened {
+    display: block;
+    transform: translateY(0);
+}
+
+/* End Screen */
+#end-screen {
+    display: none;
+    position: fixed;
+    top: 0; left: 0; width: 100vw; height: 100vh;
+    background: black;
+    z-index: 9999;
+    align-items: center;
+    justify-content: center;
+}
+#end-screen.active { display: flex; }
