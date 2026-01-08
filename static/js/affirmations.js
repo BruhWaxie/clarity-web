@@ -75,7 +75,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const id = currentSlide.dataset.id;
 
         try {
-            const response = await fetch(`/api/like/${id}/`, {
+            const response = await fetch(`/affirmations/api/like/${id}/`, {
                 method: 'POST',
                 headers: {
                     'X-CSRFToken': CSRF_TOKEN,
@@ -100,7 +100,7 @@ document.addEventListener('DOMContentLoaded', () => {
     async function fetchNextSlide(indexToFetch) {
         try {
             console.log(`Fetching slide index: ${indexToFetch}`);
-            const response = await fetch(`/api/next/?index=${indexToFetch}`);
+            const response = await fetch(`/affirmations/api/next/?index=${indexToFetch}`);
             const data = await response.json();
 
             if (data.end_of_content) {
@@ -172,7 +172,7 @@ document.addEventListener('DOMContentLoaded', () => {
     function resetTimer() {
         clearTimeout(timer);
         timer = setTimeout(() => {
-            window.location.href = '/'; // Redirect to home
+            window.location.href = '/homepage'; // Redirect to home
         }, 5000);
     }
 

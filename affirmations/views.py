@@ -6,8 +6,11 @@ from django.conf import settings
 from .models import Affirmation
 from .serializers import AffirmationSerializer
 import random
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import LoginRequiredMixin
 
 # 1. Головна сторінка (віддає HTML + перші 3 слайди)
+@login_required
 def affirmations_page(request):
     user = request.user
     
@@ -49,7 +52,7 @@ def affirmations_page(request):
 
 
 # 2. DRF API для підтягування наступних слайдів (+1)
-class GetNextAffirmation(APIView):
+class GetNextAffirmation(LoginRequiredMixin, APIView):
     def get(self, request):
         index = int(request.query_params.get('index', 0)) # Який номер слайду хоче JS
         queue = request.session.get('slides_queue', [])
@@ -64,7 +67,7 @@ class GetNextAffirmation(APIView):
         return Response(serializer.data)
 
 # 3. API для лайків
-class LikeAffirmationView(APIView):
+class LikeAffirmationView(LoginRequiredMixin, APIView):
     def post(self, request, pk):
         if not request.user.is_authenticated:
             return Response({"error": "Login required"}, status=status.HTTP_401_UNAUTHORIZED)
