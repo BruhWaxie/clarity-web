@@ -1,0 +1,531 @@
+body {
+
+    background: var(--background-img);
+    background-size: var(--bg-size);
+
+    width: 100vw;
+    background-color: black;
+    position: relative;
+}
+
+.login-container {
+    width: 28.5vw;
+    height: 100vh;
+    background-color: var(--input-user-color);
+    backdrop-filter: blur(20px);
+    position: absolute;
+    right: 0;
+    display: flex;
+    align-items: center;
+    padding-left: 20px;
+    padding-right: 20px;
+}
+
+.window {
+    width: 100%;
+    display: none;
+    opacity: 0;
+    transition: opacity 0.5s ease-in-out;
+}
+
+.window.active {
+    display: block;
+    opacity: 1;
+    animation: fadeIn 0.5s forwards;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+h3 {
+    font-size: 1.5rem;
+
+}
+
+.welcome h3,
+.welcome h4 {
+    margin: 0;
+}
+
+.welcome h4 {
+    margin-bottom: 28px;
+}
+
+.btn-main {
+    width: 100%;
+    padding: 12px 0px;
+    border-radius: 1000px;
+    background: var(--button-bg);
+    color: var(--button-text);
+    margin-bottom: 12px;
+
+    border: none;
+    fill: var(--button-text);
+    color: var(--button-text);
+    cursor: pointer;
+}
+
+.btn-main a {
+    position: static;
+    width: 100%;
+}
+
+.or {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 10px;
+    color: var(--sixth-text-color);
+}
+
+.or .center-line {
+    width: calc(45% + 10px);
+    height: 2px;
+    background: var(--fourth-color);
+}
+
+a {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    margin-top: 12px;
+}
+
+.outline-btn {
+    background: none;
+    border: 2px solid var(--button-bg);
+    color: var(--button-bg);
+    box-sizing: border-box;
+    transition: background 0.5s ease;
+}
+
+.outline-btn:hover {
+    background: var(--button-bg);
+    color: var(--button-text);
+}
+
+.slider-container {
+    width: 100%;
+    height: 45px;
+    background-color: var(--secondary-color);
+    border-radius: 100px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 6px;
+}
+
+.you-are-slider {
+    display: flex;
+    align-items: center;
+    width: calc(100% - 10px);
+    height: calc(100% - 10px);
+    background: var(--fourth-color);
+    border-radius: 100px;
+}
+
+.you-are-slider * {
+    width: 50%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 100px;
+}
+
+.psychologist-slider {
+    background: var(--primary-color);
+}
+
+.role-selection-wrapper {
+    width: 100%;
+    margin-top: 20px;
+}
+
+.input-label {
+    font-size: 1.2rem;
+    margin-bottom: 10px;
+    color: white;
+    font-weight: 500;
+}
+
+.slider-container {
+    position: relative;
+    width: 100%;
+    height: 50px;
+    background-color: #1a1a1a;
+    border-radius: 100px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 4px;
+    box-sizing: border-box;
+    overflow: hidden;
+}
+
+.slider-container input[type="radio"] {
+    display: none;
+}
+
+.slider-item {
+    width: 50%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 100px;
+    z-index: 2;
+    cursor: pointer;
+    font-size: 14px;
+    color: #888;
+    transition: color 0.3s ease;
+    user-select: none;
+}
+
+.glider {
+    position: absolute;
+    top: 4px;
+    left: 4px;
+    height: calc(100% - 8px);
+    width: calc(50% - 4px);
+    background-color: #5b86e5;
+    border-radius: 100px;
+    z-index: 1;
+    transition: transform 0.3s ease-in-out;
+}
+
+#role-customer:checked~label[for="role-customer"] {
+    color: white;
+}
+
+#role-psychologist:checked~label[for="role-psychologist"] {
+    color: white;
+}
+
+#role-psychologist:checked~.glider {
+    transform: translateX(100%);
+    left: 0;
+    margin-left: 4px;
+}
+
+.text-inputs {
+    width: 100%;
+    height: 40px;
+    border-radius: 10px;
+    background: var(--secondary-color);
+    border: none;
+    padding: 10px;
+    box-sizing: border-box;
+    margin-bottom: 12px;
+    color: white;
+
+}
+
+.text-inputs:focus {
+    outline: none;
+    border: 2px solid var(--button-bg);
+}
+
+input[type='date'] {
+    color: white;
+
+}
+
+.role-selection-wrapper {
+    margin-bottom: 24px;
+}
+
+.next {
+    padding: 7px 14px;
+    border-radius: 100px;
+
+
+}
+
+#startRegisterBtn {
+    margin-top: 12px;
+}
+
+/* Form Errors */
+.form-errors {
+    background: rgba(239, 68, 68, 0.1);
+    border: 1px solid var(--danger-color);
+    border-radius: 10px;
+    padding: 12px;
+    margin-bottom: 16px;
+}
+
+.form-errors .error-text {
+    color: var(--danger-color);
+    font-size: 13px;
+    margin: 0;
+    padding: 0;
+}
+
+.field-error {
+    color: var(--danger-color);
+    font-size: 12px;
+    margin-top: -8px;
+    margin-bottom: 10px;
+    margin-left: 4px;
+}
+
+/* Register Link Button */
+.register-link {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 12px;
+    text-decoration: none;
+}
+
+/* Forgot Password */
+.forgot-password {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.forgot-password a {
+    color: var(--sixth-text-color);
+    font-size: 13px;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.forgot-password a:hover {
+    color: var(--button-bg);
+}
+
+/* Profile Picture Upload */
+.profile-picture-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.profile-picture-preview {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    background: var(--secondary-color);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    border: 3px solid var(--button-bg);
+    margin-bottom: 12px;
+    transition: border-color 0.3s ease;
+}
+
+.profile-picture-preview:hover {
+    border-color: var(--button-bg-hover);
+}
+
+.profile-picture-preview img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.upload-label {
+    color: var(--button-bg);
+    font-size: 14px;
+    cursor: pointer;
+    transition: color 0.3s ease;
+}
+
+.upload-label:hover {
+    color: var(--button-bg-hover);
+}
+
+/* Button Group */
+.button-group {
+    display: flex;
+    gap: 12px;
+    margin-top: 8px;
+}
+
+.back-btn {
+    padding: 7px 14px;
+    border-radius: 100px;
+    background: transparent;
+    border: 2px solid var(--sixth-color);
+    color: var(--color-text);
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.back-btn:hover {
+    background: var(--sixth-color);
+    border-color: var(--sixth-color);
+}
+
+/* Step Title */
+.input-window-2 .input-label {
+    margin-bottom: 20px;
+    text-align: center;
+    display: block;
+}
+
+/* Animation for window transitions */
+.window.fade-out {
+    animation: fadeOut 0.3s forwards;
+}
+
+@keyframes fadeOut {
+    from {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+    to {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+}
+
+/* Image Cropper Modal */
+.cropper-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 10000;
+}
+
+.cropper-modal.active {
+    display: flex;
+}
+
+.cropper-modal-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.7);
+    backdrop-filter: blur(10px);
+}
+
+.cropper-modal-content {
+    position: relative;
+    background: var(--input-user-color);
+    backdrop-filter: blur(20px);
+    border-radius: 20px;
+    padding: 24px;
+    width: 90%;
+    max-width: 500px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+    animation: modalSlideIn 0.3s ease-out;
+}
+
+@keyframes modalSlideIn {
+    from {
+        opacity: 0;
+        transform: scale(0.9) translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+    }
+}
+
+.cropper-title {
+    color: white;
+    font-size: 1.3rem;
+    margin: 0 0 20px 0;
+    text-align: center;
+    font-weight: 500;
+}
+
+.cropper-container {
+    width: 100%;
+    max-height: 400px;
+    background: var(--secondary-color);
+    border-radius: 12px;
+    overflow: hidden;
+    margin-bottom: 20px;
+}
+
+.cropper-container img {
+    display: block;
+    max-width: 100%;
+    max-height: 400px;
+}
+
+.cropper-actions {
+    display: flex;
+    gap: 12px;
+    justify-content: flex-end;
+}
+
+.cropper-actions button {
+    padding: 10px 24px;
+    font-size: 14px;
+}
+
+/* Cropper.js customizations */
+.cropper-view-box,
+.cropper-face {
+    border-radius: 50%;
+}
+
+.cropper-view-box {
+    outline: 2px solid var(--button-bg);
+    outline-offset: -2px;
+}
+
+.cropper-point {
+    background-color: var(--button-bg);
+}
+
+.cropper-line {
+    background-color: var(--button-bg);
+}
+
+.cropper-modal-content .cropper-container .cropper-crop-box {
+    border-radius: 50%;
+}
+.password-container {
+    position: relative;
+    width: 100%;
+    margin-bottom: 12px;
+}
+
+.password-container input {
+    margin-bottom: 0;
+    padding-right: 40px;
+}
+
+.toggle-password {
+    position: absolute;
+    right: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
+    width: 20px;
+    height: 20px;
+    opacity: 0.7;
+    transition: opacity 0.3s;
+    color: var(--color-text);
+}
+
+.toggle-password:hover {
+    opacity: 1;
+}

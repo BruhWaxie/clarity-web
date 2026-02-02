@@ -4,8 +4,13 @@ from django.urls import reverse_lazy
 from .models import Week, MoodEntry
 from django.shortcuts import render, redirect
 from collections import defaultdict
-from datetime import date, timedelta, date
+from datetime import date, timedelta
 from django.contrib.auth.decorators import login_required
+import random
+from affirmations.models import Affirmation
+from quotes.models import Quote
+from article.models import Article
+from tester.models import Quiz
 
 def homepage_view(request):
     
@@ -32,12 +37,44 @@ def homepage_view(request):
     for entry in entries:
         weekday = entry.date.weekday()
         week_moods[weekday] = entry.mood_percent
+        
+    # Logic for daily content (Affirmation, Article, Test)
+    # Use today's ordinal as seed to ensure consistency for the whole day
+    today_ordinal = today.toordinal()
+    
+    # Affirmations
+    all_affirmations = Affirmation.objects.all()
+    daily_affirmation = None
+    if all_affirmations.exists():
+        daily_affirmation = all_affirmations[today_ordinal % all_affirmations.count()]
+        
+    # Articles
+    all_articles = Article.objects.all()
+    daily_article = None
+    if all_articles.exists():
+        daily_article = all_articles[today_ordinal % all_articles.count()]
+        
+    # Tests (Quizzes)
+    all_quizzes = Quiz.objects.all()
+    daily_test = None
+    if all_quizzes.exists():
+        daily_test = all_quizzes[today_ordinal % all_quizzes.count()]
+    
+    # Quotes
+    all_quotes = Quote.objects.all()
+    daily_quote = None
+    if all_quotes.exists():
+        daily_quote = all_quotes[today_ordinal % all_quotes.count()]
 
     return render(
         request,
         'main/logged-homepage.html',
         {
-            'week_moods': week_moods
+            'week_moods': week_moods,
+            'daily_affirmation': daily_affirmation,
+            'daily_quote': daily_quote,
+            'daily_article': daily_article,
+            'daily_test': daily_test,
         }
     )
 

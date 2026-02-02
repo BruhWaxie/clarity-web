@@ -7,10 +7,11 @@ from django.core.validators import MinValueValidator, MaxValueValidator
 class CustomUser(AbstractUser):
     ROLE_CHOICES = (
         ('user', 'Користувач'),
+        ('psychologist', 'Психолог'),
         ('moderator', 'Модератор'),
         ('admin', 'Адміністратор'),
     )
-    role = models.CharField(max_length=10, choices=ROLE_CHOICES, default='user')
+    role = models.CharField(max_length=15, choices=ROLE_CHOICES, default='user')
     pfp = models.ImageField(upload_to='user_pfps', null=True, blank=True)
     birth_date = models.DateField(blank=True, null=True)
     is_verified = models.BooleanField(default=False)
@@ -42,16 +43,16 @@ class TypeOfTherapy(models.Model):
 class Psychologist(models.Model):
     user = models.OneToOneField(CustomUser, on_delete=models.CASCADE, related_name='psychologist')
 
-    specialization = models.ForeignKey(Specialization, on_delete=models.DO_NOTHING)
-    years_of_exp = models.PositiveSmallIntegerField()
+    specialization = models.ForeignKey(Specialization, on_delete=models.DO_NOTHING, null=True, blank=True)
+    years_of_exp = models.PositiveSmallIntegerField(null=True, blank=True)
 
     sessions = models.IntegerField(default=0)
     problems = models.ManyToManyField(Problem)
     languages = models.ManyToManyField('Language', blank=True)
     type_of_therapy = models.ManyToManyField(TypeOfTherapy, blank=True)
-    place = models.TextField()
+    place = models.TextField(null=True, blank=True)
 
-    description = models.TextField()
+    description = models.TextField(null=True, blank=True)
     def __str__(self):
         return self.user.first_name + ' ' + self.user.last_name
 

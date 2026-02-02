@@ -18,7 +18,7 @@
 </head>
 
 <body>
-    
+
     <div class="fixed-navbar">
         <nav class="main-navbar">
             <div class="main-nav-content">
@@ -84,7 +84,13 @@
                         </svg>
                     </button>
                     <button class="profile-dropdown">
-                        <div class="profile-picture"></div>
+                        <div class="profile-picture">
+                            {% if profile.profile_picture %}
+                            <img src="{{ profile.profile_picture.url }}" alt="Profile Picture">
+                            {% else %}
+                            <img src="{% static 'svgs/default-profile.svg' %}" alt="Default Profile Picture">
+                            {% endif %}
+                        </div>
                     </button>
 
                     <div class="profile-dropdown-menu dropdown-basis hide" aria-hidden="true">
@@ -113,7 +119,8 @@
                                     </svg>
                                     Settings
                                 </button></li>
-                            <li><button class="profile-dropdown-choice log-out-button">
+                            <li><button onclick="document.getElementById('logoutModal').style.display='block'"
+                                    class="profile-dropdown-choice log-out-button">
                                     <svg width="20px" height="20px" viewBox="0 0 24 24" fill="none"
                                         xmlns="http://www.w3.org/2000/svg">
                                         <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
@@ -410,5 +417,48 @@
 
     <script src="./src/js/settings.js"></script>
     <script src="./src/js/navbar.js"></script>
-    
+
+    <!-- Logout Modal -->
+    <div id="logoutModal" class="modal">
+        <div class="modal-content">
+            <h3>Confirm Logout</h3>
+            <p>Are you sure you want to log out?</p>
+            <div class="modal-actions">
+                <button class="btn-cancel"
+                    onclick="document.getElementById('logoutModal').style.display='none'">Cancel</button>
+                <button class="btn-confirm" onclick="window.location.href='/logout/'">Log out</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // Profile Dropdown Toggle
+            const profileDropdownBtn = document.getElementById('profileDropdownBtn');
+            const profileDropdownMenu = document.getElementById('profileDropdownMenu');
+
+            if (profileDropdownBtn && profileDropdownMenu) {
+                profileDropdownBtn.addEventListener('click', function (e) {
+                    e.stopPropagation();
+                    const isVisible = profileDropdownMenu.style.display === 'block';
+                    profileDropdownMenu.style.display = isVisible ? 'none' : 'block';
+                    profileDropdownMenu.style.animation = isVisible ? 'none' : 'bubble-pop 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275)';
+                });
+
+                document.addEventListener('click', function (e) {
+                    if (!profileDropdownBtn.contains(e.target) && !profileDropdownMenu.contains(e.target)) {
+                        profileDropdownMenu.style.display = 'none';
+                    }
+                });
+            }
+
+            // Close modal when clicking outside
+            const logoutModal = document.getElementById('logoutModal');
+            window.onclick = function (event) {
+                if (event.target == logoutModal) {
+                    logoutModal.style.display = "none";
+                }
+            }
+        });
+    </script>
 </body>

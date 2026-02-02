@@ -131,7 +131,8 @@ a {
 
 }
 
-svg path, svg path g {
+svg path,
+svg path g {
     transition: stroke 0.5s, fill 0.5s;
 }
 
@@ -216,11 +217,12 @@ a {
     margin-right: 8px;
     background-color: var(--button-bg);
     cursor: pointer;
-    
+
 
 }
 
-.settings-button svg, .settings-button svg path{
+.settings-button svg,
+.settings-button svg path {
     fill: var(--button-text);
 }
 
@@ -282,7 +284,7 @@ h3 {
     left: 0;
     width: 100vw;
     height: 100vh;
-    background-color: var(--overflow-bg-color); 
+    background-color: var(--overflow-bg-color);
     align-items: center;
     justify-content: center;
     z-index: 10000;
@@ -349,7 +351,8 @@ h3 {
     cursor: pointer;
 }
 
-.settings-menubar svg, .settings-menubar svg * {
+.settings-menubar svg,
+.settings-menubar svg * {
     margin: 0;
     padding: 0;
     fill: var(--icon-color);
@@ -375,7 +378,7 @@ h3 {
     grid-row: span 5 / span 5;
     grid-column-start: 3;
     padding-left: 10px;
-    width: 100%;  
+    width: 100%;
     display: none;
 }
 
@@ -418,7 +421,7 @@ select {
         backdrop-filter: blur(20px);
         color: var(--color-text);
         border: 1px solid var(--fifth-color);
-        
+
     }
 }
 
@@ -465,7 +468,7 @@ select:hover {
     transition: border 0.3s;
     margin-top: 10px;
     margin-bottom: 10px;
-    
+
 }
 
 .theme-option input[type="radio"]:checked+img {
@@ -480,50 +483,50 @@ select:hover {
 }
 
 .settings-menu {
-  display: none;
-  justify-content: center;
-  align-items: center;
-  position: fixed;
-  inset: 0;
-  background: rgba(0, 0, 0, 0.3);
-  backdrop-filter: blur(10px);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.3);
+    backdrop-filter: blur(10px);
 
-  opacity: 0;
-  transform: translateY(-20px);
-  transition: opacity 0.3s ease, transform 0.3s ease;
+    opacity: 0;
+    transform: translateY(-20px);
+    transition: opacity 0.3s ease, transform 0.3s ease;
 }
 
 .settings-menu.enabled {
-  display: flex;
-  opacity: 1;
-  transform: translateY(0);
+    display: flex;
+    opacity: 1;
+    transform: translateY(0);
 }
 
 .settings-content {
-  background: var(--background, #fff);
-  color: var(--text, #000);
-  padding: 20px;
-  border-radius: 12px;
-  min-width: 300px;
-  max-width: 90%;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    background: var(--background, #fff);
+    color: var(--text, #000);
+    padding: 20px;
+    border-radius: 12px;
+    min-width: 300px;
+    max-width: 90%;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
 
-  transform: translateY(-50px);
-  opacity: 0;
-  transition: opacity 0.3s ease, transform 0.3s ease;
+    transform: translateY(-50px);
+    opacity: 0;
+    transition: opacity 0.3s ease, transform 0.3s ease;
 }
 
 .settings-menu.enabled .settings-content {
-  transform: translateY(0);
-  opacity: 1;
+    transform: translateY(0);
+    opacity: 1;
 }
 
 .close-settings {
-  background: transparent;
-  border: none;
-  font-size: 20px;
-  float: right;
-  cursor: pointer;
+    background: transparent;
+    border: none;
+    font-size: 20px;
+    float: right;
+    cursor: pointer;
 }
 
 .overflow-action-btn {
@@ -612,7 +615,7 @@ footer svg {
 
 .footer-content {
     padding: 30px;
-    
+
 }
 
 #fontSizeInput {
@@ -630,7 +633,7 @@ footer svg {
     justify-content: center;
 }
 
-.numberInputSelector svg g{
+.numberInputSelector svg g {
     fill: var(--icon-color);
     padding: 0;
     margin: 0;
@@ -657,7 +660,9 @@ footer svg {
     transform: rotate(-180deg);
 }
 
-h1, h2, h3 {
+h1,
+h2,
+h3 {
     font-family: var(--header-font);
     color: var(--text-color);
     margin: 0;
@@ -667,24 +672,24 @@ h1, h2, h3 {
 }
 
 hr {
-  border-color: var(--secondary-color);
-  margin-bottom: 30px;
+    border-color: var(--secondary-color);
+    margin-bottom: 30px;
 }
 
 .main-navbar {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
 }
 
 nav {
-  display: flex;
-  width: 1200px;
-  justify-content: space-between;
-  align-items: center;
-  padding: 10px 20px;
-  margin: 0 auto;
-  position: relative;
+    display: flex;
+    width: 1200px;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px;
+    margin: 0 auto;
+    position: relative;
 }
 
 @media (max-width: 1050px) {
@@ -732,7 +737,7 @@ nav {
     background: var(--secondary-color);
     border-radius: 50%;
     position: relative;
-    
+
 }
 
 .profile-dropdown-arrow {
@@ -757,9 +762,10 @@ nav {
     gap: 10px;
     top: 0;
     left: 0;
-    
+
 }
-.profile-dropdown-menu > ul {
+
+.profile-dropdown-menu>ul {
     list-style: none;
     padding: 0;
     margin: 0;
@@ -781,16 +787,16 @@ nav {
 }
 
 .profile-dropdown-menu.hide {
-  display: block;
-  animation: bubble-pop 1.8s cubic-bezier(0.22, 1.2, 0.36, 1) reverse forwards;
-  animation-fill-mode: forwards;
+    display: block;
+    animation: bubble-pop 1.8s cubic-bezier(0.22, 1.2, 0.36, 1) reverse forwards;
+    animation-fill-mode: forwards;
 }
 
 .profile-dropdown-menu.show {
-  display: block;
-  pointer-events: all;
-  animation: bubble-pop 0.7s cubic-bezier(0.22, 1.2, 0.36, 1) forwards;
-  animation-fill-mode: forwards;
+    display: block;
+    pointer-events: all;
+    animation: bubble-pop 0.7s cubic-bezier(0.22, 1.2, 0.36, 1) forwards;
+    animation-fill-mode: forwards;
 }
 
 .profile-dropdown-menu ul li button {
@@ -798,7 +804,7 @@ nav {
     width: 100%;
     border-radius: 10px;
     margin-bottom: 4px;
-    
+
 }
 
 .profile-dropdown-menu ul li button:hover {
@@ -806,60 +812,112 @@ nav {
 }
 
 .dropdown-basis {
-  position: absolute;
-  border-radius: 15px; /* твоє заокруглення */
-  padding: 1rem;
-  background: color-mix(in srgb, var(--secondary-color) 50%, transparent) border-box;
-  backdrop-filter: blur(10px);
-  z-index: 1000000000000000000000;
+    position: absolute;
+    border-radius: 15px;
+    /* твоє заокруглення */
+    padding: 1rem;
+    background: color-mix(in srgb, var(--secondary-color) 50%, transparent) border-box;
+    backdrop-filter: blur(10px);
+    z-index: 1000000000000000000000;
 }
 
 .dropdown-basis::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  border-radius: inherit;
-  padding: 0.5px; /* товщина “бордера” */
-  background: linear-gradient(
-    to bottom left,
-    var(--border-outline-color) 0%,
-    color-mix(in srgb, var(--border-outline-color) 50%, transparent) 10%,
-    color-mix(in srgb, var(--border-outline-color) 0%, transparent) 75%,
-    var(--border-outline-color) 100%
-  );
-  mask: 
-    linear-gradient(#fff 0 0) content-box, 
-    linear-gradient(#fff 0 0);
-  -webkit-mask: 
-    linear-gradient(#fff 0 0) content-box, 
-    linear-gradient(#fff 0 0);
-  -webkit-mask-composite: xor;
-  mask-composite: exclude;
-  pointer-events: none; /* щоб не перекривало кліки */
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    padding: 0.5px;
+    /* товщина “бордера” */
+    background: linear-gradient(to bottom left,
+            var(--border-outline-color) 0%,
+            color-mix(in srgb, var(--border-outline-color) 50%, transparent) 10%,
+            color-mix(in srgb, var(--border-outline-color) 0%, transparent) 75%,
+            var(--border-outline-color) 100%);
+    mask:
+        linear-gradient(#fff 0 0) content-box,
+        linear-gradient(#fff 0 0);
+    -webkit-mask:
+        linear-gradient(#fff 0 0) content-box,
+        linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    pointer-events: none;
+    /* щоб не перекривало кліки */
 }
 
 @keyframes bubble-pop {
-  0% {
-    transform-origin: center top;
-    opacity: 0;
-    background-color: color-mix(in srgb, var(--secondary-color) 0%, transparent) border-box;
-    transform: scale(0) translate(100px);
-    filter: blur(5px)
-  }
-  10% {
-    transform: scaleY(0.1), scaleX(0.1);
-    background-color: color-mix(in srgb, var(--secondary-color) 25%, transparent) border-box;
-    
-  }
-  25% {
-    margin-top: 30px;
-  }
-  100% {
-    opacity: 1;
-    transform: scaleY(1.1), scaleX(1.1);
-    background: color-mix(in srgb, var(--secondary-color) 50%, transparent) border-box;
-    margin-top: 20px;
-    margin-right: 35px;
-  }
+    0% {
+        transform-origin: center top;
+        opacity: 0;
+        background-color: color-mix(in srgb, var(--secondary-color) 0%, transparent) border-box;
+        transform: scale(0) translate(100px);
+        filter: blur(5px)
+    }
+
+    10% {
+        transform: scaleY(0.1), scaleX(0.1);
+        background-color: color-mix(in srgb, var(--secondary-color) 25%, transparent) border-box;
+
+    }
+
+    25% {
+        margin-top: 30px;
+    }
+
+    100% {
+        opacity: 1;
+        transform: scaleY(1.1), scaleX(1.1);
+        background: color-mix(in srgb, var(--secondary-color) 50%, transparent) border-box;
+        margin-top: 20px;
+        margin-right: 35px;
+    }
 }
 
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 100000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.4);
+    backdrop-filter: blur(15px);
+    align-items: center;
+    justify-content: center;
+}
+
+.modal-content {
+    background-color: color-mix(in srgb, var(--secondary-color) 50%, transparent);
+    margin: 15% auto;
+    width: 80%;
+    max-width: 400px;
+    border-radius: 25px;
+    text-align: center;
+    color: var(--color-text);
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    padding: 25px;
+}
+
+.modal-actions * {
+    padding: 7px 14px;
+    border-radius: 100px;
+}
+
+.modal-actions {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 12px;
+}
+
+.btn-confirm {
+    background-color: var(--danger-color);
+}
+
+.btn-cancel {
+    background-color: color-mix(in srgb, var(--secondary-color) 80%, white);
+}

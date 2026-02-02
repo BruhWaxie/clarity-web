@@ -1,11 +1,93 @@
-{% extends 'base.html' %}
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
 
-{% block content %}
-<h2>Увійти в профіль</h2>
-<form method="post">
-    {% csrf_token %}
-    {{form.as_div}}
-    <button type="submit" class="btn btn-primary">Увійти</button>
-    <a href="{% url 'register' %}" class="btn btn-link">Зареєструватися</a>
-</form>
-{% endblock %}
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login | Clarity</title>
+
+    <link rel="stylesheet" href="{% static 'css/base.css' %}">
+    <link rel="stylesheet" href="{% static 'css/fonts.css' %}">
+    <link rel="stylesheet" href="{% static 'css/login.css' %}">
+
+    <link id="themeChanger" rel="stylesheet" href="{% static 'css/dark-theme.css' %}">
+
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@100..900&display=swap" rel="stylesheet">
+    <link rel="shortcut icon" href="{% static 'svgs/basic/favicon.svg' %}" type="image/svg">
+</head>
+
+<body>
+
+    <div class="login-container">
+        <div class="welcome window active">
+            <h3>Welcome back,</h3>
+            <h4>we glad to see you!</h4>
+
+            <form method="post" id="loginForm">
+                {% csrf_token %}
+
+                {% if form.non_field_errors %}
+                <div class="form-errors">
+                    {% for error in form.non_field_errors %}
+                    <p class="error-text">{{ error }}</p>
+                    {% endfor %}
+                </div>
+                {% endif %}
+
+                <input type="text" name="username" id="username" class="text-inputs" placeholder="Username or Email"
+                    value="{{ form.username.value|default:'' }}" required>
+                {% if form.username.errors %}
+                <div class="field-error">{{ form.username.errors.0 }}</div>
+                {% endif %}
+
+                <div class="password-container">
+                    <input type="password" name="password" id="password" class="text-inputs" placeholder="Password"
+                        required>
+                    <div class="toggle-password" onclick="togglePasswordVisibility('password', this)">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"
+                            stroke-width="2">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                            <path stroke-linecap="round" stroke-linejoin="round"
+                                d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                        </svg>
+                    </div>
+                </div>
+                {% if form.password.errors %}
+                <div class="field-error">{{ form.password.errors.0 }}</div>
+                {% endif %}
+
+                <button type="submit" class="btn-main" id="loginBtn">Login</button>
+            </form>
+
+            <div class="or">
+                <div class="center-line"></div>
+                or
+                <div class="center-line"></div>
+            </div>
+
+            <a href="{% url 'register' %}" class="btn-main outline-btn register-link">Register</a>
+
+            <p class="forgot-password">
+                <a href="#">Forgot password?</a>
+            </p>
+        </div>
+    </div>
+
+    <script>
+        function togglePasswordVisibility(inputId, icon) {
+            const input = document.getElementById(inputId);
+            if (input.type === "password") {
+                input.type = "text";
+                icon.style.opacity = "1";
+            } else {
+                input.type = "password";
+                icon.style.opacity = "0.7";
+            }
+        }
+    </script>
+    <script src="{% static 'js/login.js' %}"></script>
+</body>
+
+</html>

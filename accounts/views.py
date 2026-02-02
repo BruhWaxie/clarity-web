@@ -16,6 +16,13 @@ class CustomLoginView(LoginView):
     template_name = 'accounts/login.html'
     redirect_authenticated_user = True
     form_class = LoginForm
+    
+    def get_success_url(self):
+        user = self.request.user
+        # Check if user is a psychologist
+        if hasattr(user, 'psychologist'):
+            return '/profile-info'
+        return '/homepage/'
 
 
 class CustomLogoutView(LogoutView):
@@ -23,10 +30,64 @@ class CustomLogoutView(LogoutView):
 
 
 class RegisterView(CreateView):
-    model = User
+    model = CustomUser
     template_name = 'accounts/register.html'
     form_class = RegisterForm
-    success_url = reverse_lazy('login')
+    
+    def get_success_url(self):
+        # Get the user role from the form
+        user_role = self.request.POST.get('user_role', 'customer')
+        if user_role == 'psychologist':
+            return '/profile-info'
+        return '/homepage/'
+    
+    def form_valid(self, form):
+        import base64
+        from django.core.files.base import ContentFile
+        
+        # Save the user with profile picture
+        user = form.save(commit=False)
+
+        # Handle user role
+        user_role = self.request.POST.get('user_role', 'customer')
+        if user_role == 'psychologist':
+            user.role = 'psychologist'
+        else:
+            user.role = 'user'
+        
+        # Handle cropped profile picture (base64 data)
+        cropped_data = self.request.POST.get('pfp_cropped', '')
+        if cropped_data and cropped_data.startswith('data:image'):
+            # Parse the base64 data
+            format_str, imgstr = cropped_data.split(';base64,')
+            ext = format_str.split('/')[-1]  # Get extension (jpeg, png, etc.)
+            
+            # Decode and create a file
+            image_data = base64.b64decode(imgstr)
+            filename = f"profile_{user.username}.{ext}"
+            user.pfp.save(filename, ContentFile(image_data), save=False)
+        
+        user.save()
+        
+        # Create Psychologist profile if needed
+        if user_role == 'psychologist':
+            # Create an empty psychologist profile since fields are now nullable
+            if not hasattr(user, 'psychologist'):
+                Psychologist.objects.create(user=user)
+        
+        # Store role in session for potential use
+        self.request.session['user_role'] = user_role
+        
+        # Log the user in after registration
+        from django.contrib.auth import login
+        login(self.request, user)
+        
+        return redirect(self.get_success_url())
+
+    def form_invalid(self, form):
+        print("Register Form Invalid!")
+        print(form.errors)
+        return super().form_invalid(form)
 
 
 @login_required

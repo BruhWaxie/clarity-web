@@ -1,187 +1,301 @@
-const toFav = document.querySelector('.toFav');
-const shareMenu = document.querySelector('.main-window');
-const shareOverlay = document.querySelector('.overlay-share-window');
+document.addEventListener('DOMContentLoaded', () => {
+    // DOM Elements
+    const container = document.getElementById('slider-container');
+    const likeBtn = document.getElementById('likeBtn');
+    const shareBtn = document.getElementById('shareBtn');
+    const closeShareBtn = document.getElementById('closeShare');
+    const shareMenu = document.querySelector('.main-window');
+    const shareOverlay = document.querySelector('.overlay-share-window');
+    const btnUp = document.querySelector('.btn-downward');
+    const btnDown = document.querySelector('.btn-forward');
 
-const slides = document.querySelectorAll('.slide');
-let currentIndex = 0;
-let isScrolling = false;
+    // State
+    let currentIndex = 0;
+    let isScrolling = false;
+    let isEnded = false;
 
-// масив лайків (false за замовчуванням)
-let likedSlides = Array(slides.length).fill(false);
+    // Count initial slides (those 3 that came from Django)
+    let loadedCount = document.querySelectorAll('.slide').length;
 
-toFav.addEventListener('click', () => {
-    likedSlides[currentIndex] = !likedSlides[currentIndex];
-    updateLikeIcon();
-});
+    // --- Show slide function ---
+    function showSlide(index) {
+        const slides = document.querySelectorAll('.slide');
 
-function updateLikeIcon() {
-    const outlined = toFav.querySelector('.outlined');
-    const filled = toFav.querySelector('.filled');
+        // Protect from going out of bounds
+        if (index < 0) return;
+        if (isScrolling) return;
 
-    if (likedSlides[currentIndex]) {
-        outlined.classList.remove('selected');
-        filled.classList.add('selected');
-    } else {
-        outlined.classList.add('selected');
-        filled.classList.remove('selected');
-    }
-}
+        // If reached end of list
+        if (index >= slides.length) {
+            if (isEnded) triggerEndScreen(); // If database is empty
+            return;
+        }
 
-function toggleShareMenu() {
-    shareMenu.classList.toggle('opened');
-    shareOverlay.classList.toggle('active');
-}
+        isScrolling = true;
+        currentIndex = index;
 
-shareOverlay.addEventListener('click', () => toggleShareMenu());
+        // Remove active from all
+        slides.forEach(s => s.classList.remove('active'));
+        // Set active on new
+        slides[index].classList.add('active');
 
-// показати потрібний слайд
-function showSlide(index) {
-    if (index < 0 || index >= slides.length || isScrolling) return;
-    isScrolling = true;
+        // Update like state
+        updateLikeUI();
 
-    slides[currentIndex].classList.remove('active');
-    slides[index].classList.add('active');
-    currentIndex = index;
+        // Load new slides if approaching end
+        // (e.g., if we're on 3rd slide of 3, load 4th)
+        if (index >= loadedCount - 2 && !isEnded) {
+            fetchNextSlide(loadedCount);
+        }
 
-    updateLikeIcon(); // оновлюємо іконку при переході між слайдами
-
-    setTimeout(() => isScrolling = false, 900);
-}
-
-// керування колесом
-window.addEventListener('wheel', (e) => {
-    if (e.deltaY > 0) {
-        showSlide(currentIndex + 1);
-    } else if (e.deltaY < 0) {
-        showSlide(currentIndex - 1);
-    }
-});
-
-// кнопки
-document.querySelector('.btn-forward').addEventListener('click', () => {
-    showSlide(currentIndex + 1);
-});
-
-document.querySelector('.btn-downward').addEventListener('click', () => {
-    showSlide(currentIndex - 1);
-});
-
-// --- Генерація картинки для Share ---
-// --- Генерація картинки для Share (з автором і лапкою) ---
-async function generateShareImage() {
-  // гарантуємо, що Lexend завантажений
-  try {
-    await document.fonts.load('bold 42px "Lexend"');
-  } catch (e) {
-    console.warn("Font didn't load in time, using fallback.", e);
-  }
-
-  const slide = slides[currentIndex];
-  if (!slide) return;
-
-  const bgImgEl = slide.querySelector('.background-image');
-  const quoteEl = slide.querySelector('.quote');
-  const authorEl = slide.querySelector('.author');
-
-  if (!bgImgEl || !quoteEl) return;
-
-  const bgImg = bgImgEl.src;
-  const quoteText = quoteEl.innerText.trim();
-  let authorText = authorEl ? authorEl.innerText.trim() : '';
-
-  // прибираємо дефіс "- Dalai Lama"
-  if (authorText.startsWith('-')) {
-    authorText = authorText.slice(1).trim();
-  }
-
-  const canvas = document.createElement('canvas');
-  canvas.width = 720;
-  canvas.height = 1280;
-  const ctx = canvas.getContext('2d');
-
-  const img = new Image();
-  img.crossOrigin = 'anonymous';
-  img.src = bgImg;
-
-  img.onload = () => {
-    const imgAspect = img.width / img.height;
-    const canvasAspect = canvas.width / canvas.height;
-    let drawWidth, drawHeight, offsetX, offsetY;
-
-    // object-fit: cover
-    if (imgAspect > canvasAspect) {
-      drawHeight = canvas.height;
-      drawWidth = img.width * (canvas.height / img.height);
-      offsetX = (canvas.width - drawWidth) / 2;
-      offsetY = 0;
-    } else {
-      drawWidth = canvas.width;
-      drawHeight = img.height * (canvas.width / img.width);
-      offsetX = 0;
-      offsetY = (canvas.height - drawHeight) / 2;
+        // Delay for animation (so slides don't fly by instantly)
+        setTimeout(() => isScrolling = false, 600);
     }
 
-    ctx.drawImage(img, offsetX, offsetY, drawWidth, drawHeight);
+    // --- Update like button ---
+    function updateLikeUI() {
+        const slides = document.querySelectorAll('.slide');
+        const currentSlide = slides[currentIndex];
 
-    // затемнення
-    ctx.fillStyle = 'rgba(0,0,0,0.45)';
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
+        if (!currentSlide) return;
 
-    // === ВЕЛИКА ЛАПКА, як ::before у CSS ===
-    // (аналог твоєї .quote::before) :contentReference[oaicite:0]{index=0}
-    ctx.save();
-    ctx.font = '200px "Lexend", sans-serif';
-    ctx.fillStyle = 'rgba(255,255,255,0.20)';
-    ctx.textAlign = 'left';
-    ctx.textBaseline = 'top';
-    ctx.fillText('”', 40, 80);
-    ctx.restore();
+        const isLiked = currentSlide.dataset.liked === 'true';
 
-    // === ТЕКСТ ЦИТАТИ ===
-    ctx.font = 'bold 42px "Lexend", sans-serif';
-    ctx.fillStyle = 'white';
-    ctx.textAlign = 'center';
-    ctx.textBaseline = 'middle';
-
-    const maxWidth = 580;
-    const lineHeight = 58;
-
-    const words = quoteText.split(' ');
-    const lines = [];
-    let line = words[0];
-
-    for (let i = 1; i < words.length; i++) {
-      const testLine = line + ' ' + words[i];
-      if (ctx.measureText(testLine).width > maxWidth) {
-        lines.push(line);
-        line = words[i];
-      } else {
-        line = testLine;
-      }
+        if (isLiked) {
+            likeBtn.classList.add('liked');
+        } else {
+            likeBtn.classList.remove('liked');
+        }
     }
-    lines.push(line);
 
-    const totalTextHeight = lines.length * lineHeight;
-    // трохи вище центру, щоб автор помістився знизу
-    let y = canvas.height / 2 - totalTextHeight / 2 - 40;
+    // --- API: Like ---
+    likeBtn.addEventListener('click', async () => {
+        const slides = document.querySelectorAll('.slide');
+        const currentSlide = slides[currentIndex];
+        const id = currentSlide.dataset.id;
 
-    lines.forEach(l => {
-      ctx.fillText(l, canvas.width / 2, y);
-      y += lineHeight;
+        try {
+            const response = await fetch(`/quotes/api/like/${id}/`, {
+                method: 'POST',
+                headers: {
+                    'X-CSRFToken': CSRF_TOKEN,
+                    'Content-Type': 'application/json'
+                }
+            });
+
+            if (response.ok) {
+                const data = await response.json();
+                // Update attribute in HTML to remember state
+                currentSlide.dataset.liked = data.liked ? 'true' : 'false';
+                updateLikeUI();
+            } else {
+                console.error("Like failed", response.status);
+            }
+        } catch (error) {
+            console.error("Network error on like", error);
+        }
     });
 
-    // === АВТОР ЦИТАТИ ===
-    if (authorText) {
-      ctx.font = 'italic 30px "Lexend", sans-serif';
-      ctx.fillStyle = 'rgba(255,255,255,0.85)';
-      ctx.textAlign = 'right';
-      ctx.textBaseline = 'alphabetic';
-      ctx.fillText(`— ${authorText}`, canvas.width - 60, y + 30);
+    // --- API: Fetch next slide (+1) ---
+    async function fetchNextSlide(indexToFetch) {
+        try {
+            console.log(`Fetching slide index: ${indexToFetch}`);
+            const response = await fetch(`/quotes/api/next/?index=${indexToFetch}`);
+            const data = await response.json();
+
+            if (data.end_of_content) {
+                isEnded = true;
+                console.log("End of content reached");
+                return;
+            }
+
+            createSlideElement(data);
+            loadedCount++; // Increase loaded counter
+        } catch (error) {
+            console.error("Error fetching slide:", error);
+        }
     }
 
-    // === ЛОГОТИП (той самий, що був) ===
-    const logo = new Image();
-    const svgLogo = `<svg xmlns="http://www.w3.org/2000/svg" id="Шар_1" data-name="Шар 1"
+    // Create DOM element for new slide (with author)
+    function createSlideElement(data) {
+        const div = document.createElement('div');
+        div.classList.add('slide'); // Initially invisible
+        div.dataset.id = data.id;
+        div.dataset.liked = data.is_liked ? 'true' : 'false';
+        div.dataset.author = data.author || '';
+
+        let imgHtml = '';
+        if (data.media_url) {
+            imgHtml = `<img class="background-image" src="${data.media_url}" crossorigin="anonymous">`;
+        }
+
+        div.innerHTML = `
+            ${imgHtml}
+            <p class="quote">${data.text}</p>
+            <p class="author">- ${data.author || ''}</p>
+        `;
+        container.appendChild(div);
+    }
+
+    // --- Controls (Scroll, Buttons) ---
+    window.addEventListener('wheel', (e) => {
+        if (e.deltaY > 0) showSlide(currentIndex + 1);
+        else if (e.deltaY < 0) showSlide(currentIndex - 1);
+    });
+
+    // Button navigation
+    if (btnUp) btnUp.addEventListener('click', () => showSlide(currentIndex - 1));
+    if (btnDown) btnDown.addEventListener('click', () => showSlide(currentIndex + 1));
+
+    // --- Share Window ---
+    window.toggleShareMenu = function () {
+        shareMenu.classList.toggle('opened');
+        shareOverlay.classList.toggle('active');
+
+        if (shareMenu.classList.contains('opened')) {
+            generateShareImage();
+        }
+    };
+
+    if (shareOverlay) shareOverlay.addEventListener('click', toggleShareMenu);
+    if (closeShareBtn) closeShareBtn.addEventListener('click', toggleShareMenu);
+
+    // --- End Screen (Timer) ---
+    let timer;
+    function triggerEndScreen() {
+        const endScreen = document.getElementById('end-screen');
+        if (!endScreen) return;
+
+        endScreen.classList.add('active');
+
+        resetTimer();
+        // Track movements to reset timer
+        window.addEventListener('mousemove', resetTimer);
+        window.addEventListener('keydown', resetTimer);
+    }
+
+    function resetTimer() {
+        clearTimeout(timer);
+        timer = setTimeout(() => {
+            window.location.href = '/homepage'; // Redirect to home
+        }, 5000);
+    }
+
+    // --- Generate Share Image (with author and quote mark) ---
+    async function generateShareImage() {
+        // Ensure Lexend is loaded
+        try {
+            await document.fonts.load('bold 42px "Lexend"');
+        } catch (e) {
+            console.warn("Font didn't load in time, using fallback.", e);
+        }
+
+        const slides = document.querySelectorAll('.slide');
+        const slide = slides[currentIndex];
+        if (!slide) return;
+
+        const bgImgEl = slide.querySelector('.background-image');
+        const quoteEl = slide.querySelector('.quote');
+        const authorEl = slide.querySelector('.author');
+
+        if (!bgImgEl || !quoteEl) return;
+
+        const bgImg = bgImgEl.src;
+        const quoteText = quoteEl.innerText.trim();
+        let authorText = authorEl ? authorEl.innerText.trim() : '';
+
+        // Remove dash "- Author Name"
+        if (authorText.startsWith('-')) {
+            authorText = authorText.slice(1).trim();
+        }
+
+        const canvas = document.createElement('canvas');
+        canvas.width = 720;
+        canvas.height = 1280;
+        const ctx = canvas.getContext('2d');
+
+        const img = new Image();
+        img.crossOrigin = 'anonymous';
+        img.src = bgImg;
+
+        img.onload = () => {
+            const imgAspect = img.width / img.height;
+            const canvasAspect = canvas.width / canvas.height;
+            let drawWidth, drawHeight, offsetX, offsetY;
+
+            // object-fit: cover
+            if (imgAspect > canvasAspect) {
+                drawHeight = canvas.height;
+                drawWidth = img.width * (canvas.height / img.height);
+                offsetX = (canvas.width - drawWidth) / 2;
+                offsetY = 0;
+            } else {
+                drawWidth = canvas.width;
+                drawHeight = img.height * (canvas.width / img.width);
+                offsetX = 0;
+                offsetY = (canvas.height - drawHeight) / 2;
+            }
+
+            ctx.drawImage(img, offsetX, offsetY, drawWidth, drawHeight);
+
+            // Darken
+            ctx.fillStyle = 'rgba(0,0,0,0.45)';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            // === BIG QUOTE MARK, like ::before in CSS ===
+            ctx.save();
+            ctx.font = '200px "Lexend", sans-serif';
+            ctx.fillStyle = 'rgba(255,255,255,0.20)';
+            ctx.textAlign = 'left';
+            ctx.textBaseline = 'top';
+            ctx.fillText('"', 40, 80);
+            ctx.restore();
+
+            // === QUOTE TEXT ===
+            ctx.font = 'bold 42px "Lexend", sans-serif';
+            ctx.fillStyle = 'white';
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+
+            const maxWidth = 580;
+            const lineHeight = 58;
+
+            const words = quoteText.split(' ');
+            const lines = [];
+            let line = words[0];
+
+            for (let i = 1; i < words.length; i++) {
+                const testLine = line + ' ' + words[i];
+                if (ctx.measureText(testLine).width > maxWidth) {
+                    lines.push(line);
+                    line = words[i];
+                } else {
+                    line = testLine;
+                }
+            }
+            lines.push(line);
+
+            const totalTextHeight = lines.length * lineHeight;
+            // Slightly above center so author fits below
+            let y = canvas.height / 2 - totalTextHeight / 2 - 40;
+
+            lines.forEach(l => {
+                ctx.fillText(l, canvas.width / 2, y);
+                y += lineHeight;
+            });
+
+            // === QUOTE AUTHOR ===
+            if (authorText) {
+                ctx.font = 'italic 30px "Lexend", sans-serif';
+                ctx.fillStyle = 'rgba(255,255,255,0.85)';
+                ctx.textAlign = 'right';
+                ctx.textBaseline = 'alphabetic';
+                ctx.fillText(`— ${authorText}`, canvas.width - 60, y + 30);
+            }
+
+            // === LOGO ===
+            const logo = new Image();
+            const svgLogo = `<svg xmlns="http://www.w3.org/2000/svg" id="Шар_1" data-name="Шар 1"
                             viewBox="0 0 47.50543 11.05664">
                             <defs>
                                 <style>
@@ -221,110 +335,99 @@ async function generateShareImage() {
                                 transform="translate(-43.4306 -130.10791)" />
                         </svg>`;
 
-    const svgBlob = new Blob([svgLogo], { type: 'image/svg+xml;charset=utf-8' });
-    const url = URL.createObjectURL(svgBlob);
-    logo.src = url;
+            const svgBlob = new Blob([svgLogo], { type: 'image/svg+xml;charset=utf-8' });
+            const url = URL.createObjectURL(svgBlob);
+            logo.src = url;
 
-    logo.onload = () => {
-      const logoWidth = 200;
-      const logoHeight = (logo.height / logo.width) * logoWidth || 40;
+            logo.onload = () => {
+                const logoWidth = 200;
+                const logoHeight = (logo.height / logo.width) * logoWidth || 40;
 
-      ctx.drawImage(
-        logo,
-        canvas.width / 2 - logoWidth / 2,
-        canvas.height - logoHeight - 40,
-        logoWidth,
-        logoHeight
-      );
+                ctx.drawImage(
+                    logo,
+                    canvas.width / 2 - logoWidth / 2,
+                    canvas.height - logoHeight - 40,
+                    logoWidth,
+                    logoHeight
+                );
 
-      const imageFrame = document.querySelector('.image-frame');
-      imageFrame.innerHTML = '';
-      const imgPreview = new Image();
-      imgPreview.src = canvas.toDataURL('image/png');
-      imgPreview.style.width = '100%';
-      imgPreview.style.height = 'auto';
-      imgPreview.style.borderRadius = '2vh';
-      imageFrame.appendChild(imgPreview);
-    };
-  };
-}
-
-
-// оновлення при відкритті Share
-function toggleShareMenu() {
-    shareMenu.classList.toggle('opened');
-    shareOverlay.classList.toggle('active');
-
-    if (shareMenu.classList.contains('opened')) {
-        generateShareImage();
+                const imageFrame = document.querySelector('.image-frame');
+                imageFrame.innerHTML = '';
+                const imgPreview = new Image();
+                imgPreview.src = canvas.toDataURL('image/png');
+                imgPreview.style.width = '100%';
+                imgPreview.style.height = 'auto';
+                imgPreview.style.borderRadius = '2vh';
+                imageFrame.appendChild(imgPreview);
+            };
+        };
     }
-}
 
-document.querySelectorAll('.app-icon').forEach(btn => {
-    btn.addEventListener('click', async e => {
-        e.preventDefault();
+    // Social share buttons
+    document.querySelectorAll('.app-icon').forEach(btn => {
+        btn.addEventListener('click', async e => {
+            e.preventDefault();
 
-        const img = document.querySelector('.image-frame img');
-        if (!img) return;
+            const img = document.querySelector('.image-frame img');
+            if (!img) return;
 
-        const response = await fetch(img.src);
-        const blob = await response.blob();
-        const file = new File([blob], 'affirmation.png', { type: blob.type });
+            const response = await fetch(img.src);
+            const blob = await response.blob();
+            const file = new File([blob], 'quote.png', { type: blob.type });
 
-        const platform = btn.querySelector('.name').innerText.toLowerCase();
+            const platform = btn.dataset.platform || btn.querySelector('.name').innerText.toLowerCase();
 
-        try {
-            // --- Якщо підтримується системне меню "Поділитись" (наприклад, Android) ---
-            if (navigator.canShare && navigator.canShare({ files: [file] })) {
-                await navigator.share({
-                    title: 'Daily Affirmation',
-                    text: 'Here’s my daily affirmation 🌿',
-                    files: [file]
-                });
-                return;
+            try {
+                // --- If system share is supported (e.g., Android) ---
+                if (navigator.canShare && navigator.canShare({ files: [file] })) {
+                    await navigator.share({
+                        title: 'Daily Quote',
+                        text: 'Here\'s my daily quote 🌿',
+                        files: [file]
+                    });
+                    return;
+                }
+
+                // --- Deep Links ---
+                switch (platform) {
+                    case 'telegram':
+                        window.location.href = `tg://msg_url?text=${encodeURIComponent('Here\'s my daily quote 🌿')}`;
+                        setTimeout(() => {
+                            window.open('https://t.me/share/url?text=' + encodeURIComponent('Here\'s my daily quote 🌿'), '_blank');
+                        }, 1000);
+                        break;
+
+                    case 'whatsapp':
+                        window.location.href = `whatsapp://send?text=${encodeURIComponent('Here\'s my daily quote 🌿')}`;
+                        setTimeout(() => {
+                            window.open('https://api.whatsapp.com/send?text=' + encodeURIComponent('Here\'s my daily quote 🌿'), '_blank');
+                        }, 1000);
+                        break;
+
+                    case 'instagram':
+                        window.location.href = 'instagram://direct';
+                        setTimeout(() => {
+                            window.open('https://www.instagram.com/direct/inbox/', '_blank');
+                        }, 1000);
+                        break;
+
+                    case 'more':
+                        if (navigator.share) {
+                            await navigator.share({
+                                title: 'Daily Quote',
+                                text: 'Here\'s my daily quote 🌿'
+                            });
+                        } else {
+                            alert('Sharing is only available on mobile devices.');
+                        }
+                        break;
+                }
+            } catch (err) {
+                console.error('Error opening app:', err);
             }
-
-            // --- Deep Links ---
-            switch (platform) {
-                case 'telegram':
-                    // Відкрити Telegram
-                    window.location.href = `tg://msg_url?text=${encodeURIComponent('Here’s my daily affirmation 🌿')}`;
-                    setTimeout(() => {
-                        window.open('https://t.me/share/url?text=' + encodeURIComponent('Here’s my daily affirmation 🌿'), '_blank');
-                    }, 1000);
-                    break;
-
-                case 'whatsapp':
-                    // Відкрити WhatsApp
-                    window.location.href = `whatsapp://send?text=${encodeURIComponent('Here’s my daily affirmation 🌿')}`;
-                    setTimeout(() => {
-                        window.open('https://api.whatsapp.com/send?text=' + encodeURIComponent('Here’s my daily affirmation 🌿'), '_blank');
-                    }, 1000);
-                    break;
-
-                case 'instagram':
-                    // Відкрити Instagram Direct
-                    // (на мобільному відкриє додаток, на ПК — сторінку)
-                    window.location.href = 'instagram://direct';
-                    setTimeout(() => {
-                        window.open('https://www.instagram.com/direct/inbox/', '_blank');
-                    }, 1000);
-                    break;
-
-                case 'more':
-                    if (navigator.share) {
-                        await navigator.share({
-                            title: 'Daily Affirmation',
-                            text: 'Here’s my daily affirmation 🌿'
-                        });
-                    } else {
-                        alert('Поділитись доступно лише на мобільних пристроях.');
-                    }
-                    break;
-            }
-        } catch (err) {
-            console.error('Помилка при відкритті додатку:', err);
-        }
+        });
     });
-});
 
+    // Initial UI initialization
+    updateLikeUI();
+});
