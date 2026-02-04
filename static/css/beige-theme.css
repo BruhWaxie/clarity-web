@@ -74,8 +74,8 @@
 
     /* Other */
     --border-outline-color: rgb(155, 155, 155);
-    --inner-color: rgba(0,0,0,0.1);
-    --inner-hover: rgba(0,0,0,0.2);
+    --inner-color: rgba(0, 0, 0, 0.1);
+    --inner-hover: rgba(0, 0, 0, 0.2);
     --mixable-color: black;
 
     /* Complete calendar colors */
@@ -93,6 +93,16 @@
     --blue-bubble: #8192cf;
 
     /* Profiles */
-    --content-box-color: rgba(0,0,0, 0.05);
+    --content-box-color: rgba(0, 0, 0, 0.05);
     --chip-color: var(--popup-color-blue);
+
+    /* Therapist Settings */
+    --settings-card-bg: rgba(255, 255, 255, 0.8);
+    --settings-input-bg: rgba(255, 255, 255, 0.6);
+    --settings-border-color: rgba(0, 0, 0, 0.1);
+    --settings-hover-bg: rgba(94, 129, 255, 0.08);
+    --settings-selected-bg: rgba(94, 129, 255, 0.12);
+    --settings-muted-text: #666666;
+    --settings-focus-shadow: rgba(94, 129, 255, 0.15);
+    --settings-primary-hover: #4a6de0;
 }

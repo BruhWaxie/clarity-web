@@ -6,9 +6,11 @@ from django.urls import reverse_lazy
 from django.views.decorators.http import require_http_methods
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
-from django.db.models import Avg, Count, Prefetch
+from django.db.models import Avg, Count, Prefetch, Q
+from django.contrib import messages
+import json
 
-from accounts.models import CustomUser, Abilities, Psychologist, Education, DiplomaImage, Review, Problem
+from accounts.models import CustomUser, Abilities, Psychologist, Education, DiplomaImage, Review, Problem, Specialization, Language, TypeOfTherapy
 from accounts.forms import LoginForm, RegisterForm
 
 
@@ -210,3 +212,225 @@ def add_review_view(request):
         return JsonResponse({'success': False, 'error': 'Invalid data format'}, status=400)
     except Exception as e:
         return JsonResponse({'success': False, 'error': str(e)}, status=500)
+
+
+@login_required
+def therapist_settings_view(request):
+    """View for therapist to edit their profile settings"""
+    user = request.user
+    
+    # Ensure user is a psychologist or create profile
+    if not hasattr(user, 'psychologist'):
+        if user.role == 'psychologist':
+            Psychologist.objects.create(user=user)
+        else:
+            messages.error(request, 'This page is only for therapists.')
+            return redirect('homepage')
+    
+    psychologist = user.psychologist
+    
+    if request.method == 'POST':
+        # Update user basic info
+        user.first_name = request.POST.get('first_name', user.first_name)
+        user.last_name = request.POST.get('last_name', user.last_name)
+        
+        # Handle profile picture upload
+        if 'pfp' in request.FILES:
+            user.pfp = request.FILES['pfp']
+        
+        user.save()
+        
+        # Update psychologist info
+        psychologist.description = request.POST.get('description', '')
+        
+        # Handle specialization
+        spec_id = request.POST.get('specialization')
+        if spec_id:
+            try:
+                psychologist.specialization = Specialization.objects.get(id=int(spec_id))
+            except Specialization.DoesNotExist:
+                pass
+        else:
+            psychologist.specialization = None
+        
+        # Handle years of experience
+        years_exp = request.POST.get('years_of_exp')
+        if years_exp:
+            try:
+                psychologist.years_of_exp = int(years_exp)
+            except ValueError:
+                pass
+        else:
+            psychologist.years_of_exp = None
+        
+        # Handle place
+        psychologist.place = request.POST.get('place', '')
+        
+        # Handle languages (many-to-many)
+        language_ids = request.POST.getlist('languages')
+        psychologist.languages.clear()
+        for lang_id in language_ids:
+            try:
+                lang = Language.objects.get(id=int(lang_id))
+                psychologist.languages.add(lang)
+            except Language.DoesNotExist:
+                pass
+        
+        # Handle therapy types (many-to-many)
+        therapy_ids = request.POST.getlist('type_of_therapy')
+        psychologist.type_of_therapy.clear()
+        for therapy_id in therapy_ids:
+            try:
+                therapy = TypeOfTherapy.objects.get(id=int(therapy_id))
+                psychologist.type_of_therapy.add(therapy)
+            except TypeOfTherapy.DoesNotExist:
+                pass
+        
+        # Handle problems (many-to-many)
+        problem_ids = request.POST.getlist('problems')
+        psychologist.problems.clear()
+        for problem_id in problem_ids:
+            try:
+                problem = Problem.objects.get(id=int(problem_id))
+                psychologist.problems.add(problem)
+            except Problem.DoesNotExist:
+                pass
+        
+        psychologist.save()
+        
+        # Handle education data (JSON)
+        educations_data = request.POST.get('educations_data', '[]')
+        try:
+            educations = json.loads(educations_data)
+            # Keep track of existing education IDs
+            existing_ids = set()
+            
+            for edu_data in educations:
+                edu_id = edu_data.get('id', '')
+                
+                # Skip if it's a new entry (starts with 'new_')
+                if str(edu_id).startswith('new_'):
+                    # Create new education
+                    Education.objects.create(
+                        psychologist=psychologist,
+                        institution=edu_data.get('institution', ''),
+                        degree=edu_data.get('degree', ''),
+                        field_of_study=edu_data.get('field_of_study', ''),
+                        start_year=int(edu_data.get('start_year', 2020)),
+                        end_year=int(edu_data.get('end_year')) if edu_data.get('end_year') else None
+                    )
+                else:
+                    # Existing education - just track it
+                    try:
+                        existing_ids.add(int(edu_id))
+                    except ValueError:
+                        pass
+            
+            # Delete educations that are no longer in the list
+            psychologist.educations.exclude(id__in=existing_ids).delete()
+        except json.JSONDecodeError:
+            pass
+        
+        # Handle abilities data (JSON)
+        abilities_data = request.POST.get('abilities_data', '[]')
+        try:
+            abilities = json.loads(abilities_data)
+            # Keep track of existing ability IDs
+            existing_ability_ids = set()
+            
+            for ability_data in abilities:
+                ability_id = ability_data.get('id', '')
+                
+                if str(ability_id).startswith('new_'):
+                    # Create new ability
+                    Abilities.objects.create(
+                        user=psychologist,
+                        ability=ability_data.get('ability', '')
+                    )
+                else:
+                    try:
+                        existing_ability_ids.add(int(ability_id))
+                    except ValueError:
+                        pass
+            
+            # Delete abilities that are no longer in the list
+            psychologist.abilities.exclude(id__in=existing_ability_ids).delete()
+        except json.JSONDecodeError:
+            pass
+        
+        messages.success(request, 'Your profile has been updated successfully!')
+        return redirect('therapist_settings')
+    
+    # GET request - display form
+    context = {
+        'user': user,
+        'psychologist': psychologist,
+        'specializations': Specialization.objects.all(),
+        'languages': Language.objects.all(),
+        'therapy_types': TypeOfTherapy.objects.all(),
+        'problems': Problem.objects.all(),
+        'educations': psychologist.educations.all(),
+        'abilities': psychologist.abilities.all(),
+    }
+    
+    return render(request, 'accounts/therapist-settings.html', context)
+
+
+def find_therapist_view(request):
+    """View to search and filter therapists"""
+    queryset = Psychologist.objects.all().select_related('user', 'specialization').prefetch_related('problems', 'type_of_therapy')
+    
+    # Text Search (Name, Description, Specialization Name)
+    q = request.GET.get('q')
+    if q:
+        queryset = queryset.filter(
+            Q(user__first_name__icontains=q) |
+            Q(user__last_name__icontains=q) |
+            Q(description__icontains=q) |
+            Q(specialization__name__icontains=q)
+        )
+    
+    # Exact Filters
+    spec_id = request.GET.get('specialization')
+    if spec_id:
+        queryset = queryset.filter(specialization__id=spec_id)
+        
+    problem_ids = request.GET.getlist('problems')
+    if problem_ids:
+        queryset = queryset.filter(problems__id__in=problem_ids)
+        
+    type_ids = request.GET.getlist('type')
+    if type_ids:
+        queryset = queryset.filter(type_of_therapy__id__in=type_ids)
+        
+    lang_ids = request.GET.getlist('language')
+    if lang_ids:
+        queryset = queryset.filter(languages__id__in=lang_ids)
+    
+    # Dedup
+    queryset = queryset.distinct()
+    
+    # Ordering
+    order = request.GET.get('order')
+    if order == 'experience':
+        queryset = queryset.order_by('-years_of_exp')
+    elif order == 'rating':
+        queryset = queryset.annotate(avg_rating=Avg('reviews__rating')).order_by('-avg_rating')
+    else:
+        queryset = queryset.order_by('?')
+    
+    # Context for filters
+    context = {
+        'therapists': queryset,
+        'specializations': Specialization.objects.all(),
+        'problems': Problem.objects.all(),
+        'therapy_types': TypeOfTherapy.objects.all(),
+        'languages': Language.objects.all(),
+        
+        # Keep filter state
+        'selected_problems': problem_ids,
+        'selected_types': type_ids,
+        'selected_languages': lang_ids,
+    }
+    
+    return render(request, 'find_therapist.html', context)

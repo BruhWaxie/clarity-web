@@ -1,0 +1,423 @@
+/* Find Therapist & Article List Styles */
+
+.search-page-container {
+    max-width: 1400px;
+    margin: 80px auto;
+    /* adjusted for fixed navbar */
+    padding: 20px;
+    display: flex;
+    gap: 30px;
+}
+
+@media (max-width: 768px) {
+    .search-page-container {
+        flex-direction: column;
+        margin-top: 100px;
+    }
+}
+
+/* Filters Sidebar */
+.filters-sidebar {
+    width: 300px;
+    flex-shrink: 0;
+    background: var(--menu-box-bg-color, #ffffff);
+    padding: 25px;
+    border-radius: 20px;
+    height: fit-content;
+    position: sticky;
+    top: 100px;
+    border: 1px solid var(--fifth-color, #eee);
+    backdrop-filter: blur(10px);
+}
+
+.filters-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.filters-header h2 {
+    font-size: 20px;
+    font-weight: 600;
+    margin: 0;
+    color: var(--color-text);
+}
+
+.filter-group {
+    margin-bottom: 20px;
+}
+
+.filter-group label {
+    display: block;
+    font-size: 14px;
+    font-weight: 500;
+    margin-bottom: 8px;
+    color: var(--color-text);
+}
+
+.filter-input {
+    width: 100%;
+    padding: 10px 15px;
+    border-radius: 12px;
+    border: 1px solid var(--fifth-color, #ddd);
+    background: var(--select-bg-color, rgba(255, 255, 255, 0.5));
+    color: var(--color-text);
+    font-family: var(--main-font);
+    font-size: 14px;
+    transition: all 0.3s ease;
+    box-sizing: border-box;
+}
+
+.filter-input:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 3px rgba(var(--primary-color-rgb), 0.1);
+}
+
+.filter-checkbox-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    max-height: 200px;
+    overflow-y: auto;
+    padding-right: 5px;
+}
+
+/* Custom Checkbox */
+.filter-checkbox {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    font-size: 14px;
+    color: var(--color-text);
+    user-select: none;
+}
+
+.filter-checkbox input {
+    display: none;
+}
+
+.checkbox-custom {
+    width: 18px;
+    height: 18px;
+    border: 2px solid var(--secondary-color, #ccc);
+    border-radius: 4px;
+    margin-right: 10px;
+    position: relative;
+    transition: all 0.2s;
+}
+
+.filter-checkbox input:checked+.checkbox-custom {
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
+}
+
+.filter-checkbox input:checked+.checkbox-custom::after {
+    content: '';
+    position: absolute;
+    left: 5px;
+    top: 2px;
+    width: 4px;
+    height: 9px;
+    border: solid white;
+    border-width: 0 2px 2px 0;
+    transform: rotate(45deg);
+}
+
+.apply-filters-btn {
+    width: 100%;
+    padding: 12px;
+    background: var(--button-bg);
+    color: var(--button-text);
+    border: none;
+    border-radius: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    margin-top: 10px;
+    transition: background 0.3s;
+}
+
+.apply-filters-btn:hover {
+    background: var(--button-bg-hover);
+}
+
+/* Results Area */
+.results-area {
+    flex-grow: 1;
+}
+
+.results-header {
+    margin-bottom: 25px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.results-count {
+    color: var(--secondary-color, #666);
+    font-size: 14px;
+}
+
+.results-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 25px;
+}
+
+/* Card Styles */
+.card-item {
+    background: var(--menu-box-bg-color, #ffffff);
+    border-radius: 20px;
+    padding: 20px;
+    transition: transform 0.3s, box-shadow 0.3s;
+    border: 1px solid var(--fifth-color, #eee);
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    overflow: hidden;
+}
+
+.card-item:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+}
+
+/* Therapist Specific */
+.therapist-header {
+    display: flex;
+    gap: 15px;
+    margin-bottom: 15px;
+}
+
+.therapist-img {
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid var(--primary-color);
+}
+
+.therapist-info h3 {
+    margin: 0 0 5px 0;
+    font-size: 18px;
+    color: var(--color-text);
+}
+
+.therapist-specialization {
+    color: var(--primary-color);
+    font-size: 14px;
+    font-weight: 500;
+    margin-bottom: 5px;
+}
+
+.therapist-rating {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 13px;
+    color: var(--secondary-color, #666);
+}
+
+.rating-star {
+    fill: #FFD700;
+    width: 14px;
+    height: 14px;
+}
+
+.chips-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 15px;
+}
+
+.chip {
+    padding: 4px 10px;
+    border-radius: 20px;
+    background: var(--chip-bg, #f0f0f0);
+    color: var(--secondary-color, #555);
+    font-size: 12px;
+    font-weight: 500;
+}
+
+.card-description {
+    font-size: 14px;
+    color: var(--color-text);
+    opacity: 0.8;
+    line-height: 1.5;
+    margin-bottom: 20px;
+    flex-grow: 1;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.card-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: auto;
+    padding-top: 15px;
+    border-top: 1px solid var(--sixth-color, #eee);
+}
+
+.price-tag {
+    font-weight: 700;
+    color: var(--color-text);
+}
+
+.view-profile-btn {
+    padding: 8px 16px;
+    background: var(--primary-color);
+    color: white;
+    border-radius: 20px;
+    font-size: 13px;
+    font-weight: 600;
+    transition: background 0.2s;
+}
+
+.view-profile-btn:hover {
+    background: var(--button-bg-hover);
+    text-decoration: none;
+}
+
+/* Article Specific */
+.article-card {
+    padding: 0;
+    border: none;
+    background: transparent;
+}
+
+.article-image-container {
+    height: 180px;
+    border-radius: 20px;
+    overflow: hidden;
+    margin-bottom: 15px;
+    position: relative;
+}
+
+.article-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.5s;
+}
+
+.article-card:hover .article-image {
+    transform: scale(1.05);
+}
+
+.article-category {
+    position: absolute;
+    top: 15px;
+    left: 15px;
+    background: rgba(255, 255, 255, 0.9);
+    padding: 5px 12px;
+    border-radius: 12px;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--primary-color);
+    backdrop-filter: blur(5px);
+}
+
+.article-content {
+    padding: 10px;
+}
+
+.article-date {
+    font-size: 12px;
+    color: var(--secondary-color);
+    margin-bottom: 8px;
+    display: block;
+}
+
+.article-title {
+    font-size: 18px;
+    font-weight: 700;
+    margin: 0 0 10px 0;
+    color: var(--color-text);
+    line-height: 1.3;
+}
+
+.article-preview {
+    font-size: 14px;
+    color: var(--color-text);
+    opacity: 0.7;
+    margin-bottom: 15px;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.article-author {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.author-mini-img {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.author-name {
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--color-text);
+}
+
+/* Pagination */
+.pagination {
+    margin-top: 40px;
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+}
+
+.page-btn {
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background: var(--menu-box-bg-color);
+    color: var(--color-text);
+    border: 1px solid var(--fifth-color);
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.page-btn.active {
+    background: var(--primary-color);
+    color: white;
+    border-color: var(--primary-color);
+}
+
+.page-btn:hover:not(.active) {
+    background: var(--fifth-color);
+}
+
+/* Animations */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.card-item {
+    animation: fadeIn 0.5s ease forwards;
+}

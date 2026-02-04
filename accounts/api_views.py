@@ -49,3 +49,56 @@ class ReviewViewSet(viewsets.ReadOnlyModelViewSet):
             'limit': limit,
             'has_more': (offset + limit) < total_count
         })
+
+
+class MetadataViewSet(viewsets.ViewSet):
+    permission_classes = [AllowAny]  # Adjust permissions as needed
+
+    @action(detail=False, methods=['get'])
+    def search(self, request):
+        term_type = request.query_params.get('type')
+        query = request.query_params.get('q', '').strip()
+        
+        if not query:
+            return Response([])
+            
+        from .models import Specialization, TypeOfTherapy, Problem
+        
+        if term_type == 'specialization':
+            model = Specialization
+        elif term_type == 'therapy':
+            model = TypeOfTherapy
+        elif term_type == 'problem':
+            model = Problem
+        else:
+            return Response({'error': 'Invalid type'}, status=400)
+            
+        results = model.objects.filter(name__icontains=query)[:20]
+        data = [{'id': r.id, 'name': r.name} for r in results]
+        return Response(data)
+
+    @action(detail=False, methods=['post'])
+    def create_term(self, request):
+        term_type = request.data.get('type')
+        name = request.data.get('name', '').strip()
+        
+        if not name:
+            return Response({'error': 'Name is required'}, status=400)
+
+        from .models import Specialization, TypeOfTherapy, Problem
+
+        if term_type == 'specialization':
+            model = Specialization
+        elif term_type == 'therapy':
+            model = TypeOfTherapy
+        elif term_type == 'problem':
+            model = Problem
+        else:
+            return Response({'error': 'Invalid type'}, status=400)
+            
+        term, created = model.objects.get_or_create(
+            name__iexact=name,
+            defaults={'name': name}
+        )
+        
+        return Response({'id': term.id, 'name': term.name, 'created': created})

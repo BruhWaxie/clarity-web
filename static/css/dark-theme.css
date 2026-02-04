@@ -88,4 +88,14 @@
     /* Profiles */
     --content-box-color: var(--third-color);
     --chip-color: var(--secondary-color);
+
+    /* Therapist Settings */
+    --settings-card-bg: rgba(31, 31, 31, 0.9);
+    --settings-input-bg: rgba(47, 47, 47, 0.8);
+    --settings-border-color: rgba(255, 255, 255, 0.1);
+    --settings-hover-bg: rgba(94, 129, 255, 0.1);
+    --settings-selected-bg: rgba(94, 129, 255, 0.15);
+    --settings-muted-text: #888888;
+    --settings-focus-shadow: rgba(94, 129, 255, 0.2);
+    --settings-primary-hover: #7a9bff;
 }
